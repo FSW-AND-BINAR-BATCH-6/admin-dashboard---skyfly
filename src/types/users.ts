@@ -1,6 +1,8 @@
 export type Users = {
-  name: string;
+  id: String;
+  name: String;
   familyName: String;
-  email: string;
-  status: string;
+  email: String;
+  status: Boolean;
+  password: String;
 };
