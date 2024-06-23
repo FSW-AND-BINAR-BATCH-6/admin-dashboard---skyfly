@@ -2,7 +2,9 @@ import axios from 'axios';
 import { BsFillPencilFill } from 'react-icons/bs';
 import { BsFillTrash3Fill } from 'react-icons/bs';
 import { BsEye } from 'react-icons/bs';
-import { BsFillArrowDownCircleFill } from 'react-icons/bs';
+import { BsFillArrowRightCircleFill } from 'react-icons/bs';
+import { BsFillAirplaneFill } from 'react-icons/bs';
+import { BsBuildingsFill } from 'react-icons/bs';
 
 import React, { useEffect, useState } from 'react';
 import { getCookie } from 'typescript-cookie';
@@ -10,7 +12,8 @@ import { getCookie } from 'typescript-cookie';
 const fetchFlights = async () => {
   let token = getCookie('_token');
   const response = await axios.get(
-    'https://backend-skyfly-c1.vercel.app/api/v1/flights?limit=10',
+    // 'https://backend-skyfly-c1.vercel.app/api/v1/flights?limit=100',
+    'http://localhost:2000/api/v1/flights?limit=100',
     {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -19,10 +22,44 @@ const fetchFlights = async () => {
   );
   return response.data.data;
 };
-const updateFlights = async () => {
+
+const updateFlights = async (e: React.ChangeEvent<any>) => {
+    e.preventDefault();
+    let id = e.target.id.value;
+    let data = {
+      departureDate: e.target.name.value,
+      departureAirportId: e.target.departureAirportId.value,
+      transitArrivalDate: e.target.transitArivvalDate.value,
+      transitDepartureDate: e.target.transitDepartureDate.value,
+      transitAirportId: e.target.transitAirportId.value,
+      arrivalDate: e.target.arrivalDate.value,
+      destinationAirportId: e.target.destinationAirportId.value,
+      capacity: e.target.capacity.value,
+      discount: e.target.discount.value,
+      price: e.target.price.value,
+      facilities: e.target.facilities.value,
+    };
+  
+    let token = getCookie('_token');
+  
+    const response = await axios.put(
+      `https://backend-skyfly-c1.vercel.app/api/v1/users/${id}`,
+      data,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+  
+    return response.data.data;
+  };
+
+  
+const deleteFlights = async (id: string) => {
   let token = getCookie('_token');
-  const response = await axios.get(
-    'https://backend-skyfly-c1.vercel.app/api/v1/flights?limit=5000',
+  const response = await axios.delete(
+    `http://localhost:2000/api/v1/flights/${id}`,
     {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -32,18 +69,9 @@ const updateFlights = async () => {
 
   return response.data.data;
 };
-const deleteFlights = async () => {
-  let token = getCookie('_token');
-  const response = await axios.get(
-    'https://backend-skyfly-c1.vercel.app/api/v1/flights?limit=5000',
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    },
-  );
 
-  return response.data.data;
+const formatPrice = (price: number) => {
+  return `${price.toLocaleString('id-ID').trim()}`;
 };
 
 const TableFlights = () => {
@@ -55,6 +83,18 @@ const TableFlights = () => {
     });
   }, []);
 
+  const handleDelete = async (id: string) => {
+    try {
+      await deleteFlights(id); 
+      const updatedFlights = await fetchFlights(); 
+      setFlights(updatedFlights); 
+      const modal = document.getElementById(`delete_modal-${id}`) as HTMLDialogElement;
+      modal.close();
+    } catch (error) {
+      console.error('Error deleting flight:', error);
+    }
+  };
+
   return (
     <>
       <div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
@@ -63,13 +103,14 @@ const TableFlights = () => {
             <thead>
               <tr className="bg-gray-2 text-left dark:bg-meta-4">
                 <th className="min-w-[220px] py-4 px-4 font-medium text-black dark:text-white xl:pl-11">
-                  Flight
+                  Flight from
                 </th>
+                <th className="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white"></th>
                 <th className="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white">
-                  Plane
+                  To
                 </th>
                 <th className="min-w-[120px] py-4 px-4 font-medium text-black dark:text-white">
-                  Airport
+                  Fee
                 </th>
                 <th className="py-4 px-4 font-medium text-black dark:text-white">
                   Actions
@@ -81,14 +122,60 @@ const TableFlights = () => {
                 <tr key={key}>
                   <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
                     <h5 className="font-medium text-black dark:text-white">
-                      {flight.departureAirport.name} <BsFillArrowDownCircleFill /> {flight.destinationAirport.name}
+                      {flight.departureAirport.name}
                     </h5>
-                    <p className="text-sm">{flight.code}</p>
+                    <p className="font-small text-black dark:text-white">
+                      {flight.departureDate} - {flight.departureTime}
+                    </p>
+                    <p className="text-sm flex items-center">
+                      <BsBuildingsFill className="mr-2" />
+                      {flight.departureAirport.city} -{' '}
+                      {flight.departureAirport.code} -{' '}
+                      {flight.departureAirport.country}
+                    </p>
+                    <p className="text-sm flex items-center">
+                      <BsFillAirplaneFill className="mr-2" />
+                      {flight.plane.name} - {flight.plane.code}
+                    </p>
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                    <p className="text-black dark:text-white">{flight.code}</p>
+                    <p className="text-black dark:text-white">
+                      <BsFillArrowRightCircleFill />
+                    </p>
                   </td>
-                  <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark"></td>
+                  <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                    <h5 className="font-medium text-black dark:text-white">
+                      {flight.destinationAirport.name}
+                    </h5>
+                    <p className="font-small text-black dark:text-white">
+                      {flight.arrivalDate} - {flight.arrivalTime}
+                    </p>
+                    <p className="text-sm flex items-center">
+                      <BsBuildingsFill className="mr-2" />
+                      {flight.destinationAirport.city} -{' '}
+                      {flight.destinationAirport.code} -{' '}
+                      {flight.destinationAirport.country}
+                    </p>
+                    <p className="text-sm flex items-center">
+                      <BsFillAirplaneFill className="mr-2" />
+                      {flight.plane.name} - {flight.plane.code}
+                    </p>{' '}
+                  </td>
+                  <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                    <p className="text-black dark:text-white">
+                      IDR {formatPrice(flight.price)}
+                    </p>
+                    <p
+                      className={
+                        flight.discount
+                          ? 'text-red-500 text-xs'
+                          : 'text-gray-500 text-xs'
+                      }
+                    >
+                      {flight.discount ? `${flight.discount}%` : 'No Discount'}
+                    </p>
+                  </td>
+
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                     <div className="flex items-center space-x-3.5">
                       {/* Detail */}
@@ -102,58 +189,152 @@ const TableFlights = () => {
                         }
                       >
                         <BsEye />
-                        {/* detail modal */}
-                        <dialog
-                          id={`detail_modal-${flight.id}`}
-                          className="modal"
-                        >
-                          <div className="modal-box bg-white dark:bg-boxdark">
-                            <h3 className="font-bold text-lg text-light ">
-                              Detail
-                            </h3>
-                            <div className="chat chat-start">
-                              <div className="chat-bubble">
-                                please introduce your self
-                              </div>
-                            </div>
-
-                            <div className="chat chat-end">
-                              <div className="chat-bubble text-start">
-                                Hello, my name is <strong>{flight.name}</strong>
-                                <br />
-                                My cellphone number is{' '}
-                                <strong>{flight.phoneNumber}</strong> <br />
-                                My email address is{' '}
-                                <strong>{flight.image}</strong> <br />
-                                My surname{' '}
-                                <strong>
-                                  {flight.familyName || 'Family'}
-                                </strong>{' '}
-                                <br /> here I am as{' '}
-                                <strong>{flight.role}</strong> <br />
-                                And I have{' '}
-                                {/* <strong>
-                                  {flight.auth.isVerified
-                                    ? 'verified'
-                                    : 'unverified'}
-                                </strong> */}
-                                <br />
-                                <br />
-                                Nice to meet you ❤
-                              </div>
-                            </div>
-
-                            <div className="modal-action">
-                              <form method="dialog">
-                                {/* if there is a button in form, it will close the modal */}
-                                <button className="btn btn-ghost dark:bg-boxdark">
-                                  Close
-                                </button>
-                              </form>
-                            </div>
-                          </div>
-                        </dialog>
                       </button>
+                      {/* detail modal */}
+                      <dialog
+                        id={`detail_modal-${flight.id}`}
+                        className="modal"
+                      >
+                        <div className="modal-box bg-white dark:bg-boxdark">
+                          <h3 className="font-bold text-lg text-light">
+                            Flight Details
+                          </h3>
+                          <div className="text-start">
+                            <p>
+                              <strong>Flight ID:</strong> {flight.id}
+                            </p>
+                            <p>
+                              <strong>Flight Code:</strong> {flight.code}
+                            </p>
+                            <p>
+                              <strong>Terminal:</strong> {flight.plane.terminal}
+                            </p>
+                            <p>
+                              <strong>Plane:</strong> {flight.plane.name} (
+                              {flight.plane.code})
+                            </p>
+                            <p>
+                              <strong>Price:</strong> IDR{' '}
+                              {formatPrice(flight.price)}
+                            </p>
+                            <p>
+                              <strong>Discount:</strong>{' '}
+                              {flight.discount
+                                ? `${flight.discount}%`
+                                : 'No Discount'}
+                            </p>
+                            <details className="mt-2">
+                              <summary className="cursor-pointer">
+                                <strong>Departure Information</strong>
+                              </summary>
+                              <div className="ml-4 mt-2">
+                                <p>
+                                  <strong>Departure Airport:</strong>{' '}
+                                  {flight.departureAirport.name}
+                                </p>
+                                <p>
+                                  <strong>Departure City:</strong>{' '}
+                                  {flight.departureAirport.city}
+                                </p>
+                                <p>
+                                  <strong>Departure Country:</strong>{' '}
+                                  {flight.departureAirport.country}
+                                </p>
+                                <p>
+                                  <strong>Departure Code:</strong>{' '}
+                                  {flight.departureAirport.code}
+                                </p>
+                                <p>
+                                  <strong>Departure Date:</strong>{' '}
+                                  {flight.departureDate}
+                                </p>
+                                <p>
+                                  <strong>Departure Time:</strong>{' '}
+                                  {flight.departureTime}
+                                </p>
+                              </div>
+                            </details>
+                            <details className="mt-2">
+                              <summary className="cursor-pointer">
+                                <strong>Transit Information</strong>
+                              </summary>
+                              <div className="ml-4 mt-2">
+                                <p>
+                                  <strong>Transit Airport:</strong>{' '}
+                                  {flight.transit.transitAirport?.name || 'N/A'}
+                                </p>
+                                <p>
+                                  <strong>Transit City:</strong>{' '}
+                                  {flight.transit.transitAirport?.city || 'N/A'}
+                                </p>
+                                <p>
+                                  <strong>Transit Country:</strong>{' '}
+                                  {flight.transit.transitAirport?.country ||
+                                    'N/A'}
+                                </p>
+                                <p>
+                                  <strong>Transit Code:</strong>{' '}
+                                  {flight.transit.transitAirport?.code || 'N/A'}
+                                </p>
+                                <p>
+                                  <strong>Transit Arrival Date:</strong>{' '}
+                                  {flight.transit?.arrivalDate || 'N/A'}
+                                </p>
+                                <p>
+                                  <strong>Transit Arrival Time:</strong>{' '}
+                                  {flight.transit?.arrivalTime || 'N/A'}
+                                </p>
+                                <p>
+                                  <strong>Transit Departure Date:</strong>{' '}
+                                  {flight.transit?.departureDate || 'N/A'}
+                                </p>
+                                <p>
+                                  <strong>Transit Departure Time:</strong>{' '}
+                                  {flight.transit?.departureTime || 'N/A'}
+                                </p>
+                              </div>
+                            </details>
+                            <details className="mt-2">
+                              <summary className="cursor-pointer">
+                                <strong>Destination Information</strong>
+                              </summary>
+                              <div className="ml-4 mt-2">
+                                <p>
+                                  <strong>Destination Airport:</strong>{' '}
+                                  {flight.destinationAirport.name}
+                                </p>
+                                <p>
+                                  <strong>Destination City:</strong>{' '}
+                                  {flight.destinationAirport.city}
+                                </p>
+                                <p>
+                                  <strong>Destination Country:</strong>{' '}
+                                  {flight.destinationAirport.country}
+                                </p>
+                                <p>
+                                  <strong>Destination Code:</strong>{' '}
+                                  {flight.destinationAirport.code}
+                                </p>
+                                <p>
+                                  <strong>Arrival Date:</strong>{' '}
+                                  {flight.arrivalDate}
+                                </p>
+                                <p>
+                                  <strong>Arrival Time:</strong>{' '}
+                                  {flight.arrivalTime}
+                                </p>
+                              </div>
+                            </details>
+                          </div>
+                          <div className="modal-action">
+                            <form method="dialog">
+                              <button className="btn btn-ghost dark:bg-boxdark">
+                                Close
+                              </button>
+                            </form>
+                          </div>
+                        </div>
+                      </dialog>
 
                       {/* Delete */}
                       <button
@@ -174,19 +355,16 @@ const TableFlights = () => {
                           <div className="modal-box bg-white dark:bg-boxdark">
                             <h3 className="font-bold text-lg">Delete</h3>
                             <p className="py-4">
-                              Are you sure for deleting '{flight.name}' data?
+                              Are you sure you want to delete this data?
                             </p>
                             <div className="modal-action justify-between">
                               <button
                                 className="btn btn-error"
-                                onClick={() => {
-                                  //   deleteFlights(flight.id);
-                                }}
+                                onClick={() => handleDelete(flight.id)!.close()}
                               >
                                 Yes, Delete it
                               </button>
                               <form method="dialog">
-                                {/* if there is a button in form, it will close the modal */}
                                 <button className="btn btn-ghost">Close</button>
                               </form>
                             </div>
@@ -196,7 +374,7 @@ const TableFlights = () => {
 
                       {/* Edit */}
                       <button
-                        className="hover:text-warning"
+                        className="hover:text-blue-500"
                         title="edit"
                         onClick={() =>
                           document
@@ -321,19 +499,6 @@ const TableFlights = () => {
                                   className="select w-full input input-bordered flex items-center gap-2 my-2 bg-white dark:bg-boxdark"
                                   name="isVerified"
                                 >
-                                  {/* <option
-                                    defaultValue={
-                                      flight.auth.isVerified ? '1' : '0'
-                                    }
-                                    selected
-                                    hidden
-                                  >
-                                    {flight.auth.isVerified
-                                      ? 'verified'
-                                      : 'un-verified'}
-                                  </option>
-                                  <option value="1">Verified</option>
-                                  <option value="0">Unverified</option> */}
                                 </select>
                                 {/* role */}
                                 <select
