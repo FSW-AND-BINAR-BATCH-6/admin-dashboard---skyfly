@@ -10,6 +10,7 @@ import FormLayout from './pages/Form/FormLayout';
 import Profile from './pages/Profile';
 import Settings from './pages/Settings';
 import Tables from './pages/Users';
+import TablesNotifications from './pages/Notification';
 import DefaultLayout from './layout/DefaultLayout';
 import { Toaster } from 'react-hot-toast';
 import { getCookie } from 'typescript-cookie';
@@ -105,6 +106,15 @@ function App() {
                 <>
                   <PageTitle title="Users | SkyFly Admin" />
                   <Tables />
+                </>
+              }
+            />
+            <Route
+              path="/notifications"
+              element={
+                <>
+                  <PageTitle title="Notifications | SkyFly Admin" />
+                  <TablesNotifications />
                 </>
               }
             />

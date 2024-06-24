@@ -44,7 +44,7 @@ const Profile = () => {
               </div>
               <div className="flex flex-col items-center justify-center gap-1 border-r border-stroke px-4 dark:border-strokedark xsm:flex-row">
                 <span className="font-semibold text-black dark:text-white">
-                  {userLoggedIn.phoneNumber}
+                  {userLoggedIn.phoneNumber}npm i @types/react --save-dev
                 </span>
               </div>
               <div className="flex flex-col items-center justify-center gap-1 px-4 xsm:flex-row">

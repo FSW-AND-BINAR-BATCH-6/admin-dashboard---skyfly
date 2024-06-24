@@ -5,6 +5,7 @@ import Logo from '../../images/logo/logo.svg';
 
 import { BiSolidDashboard } from 'react-icons/bi';
 import { BiSolidUser } from 'react-icons/bi';
+import { BiSolidNotification } from 'react-icons/bi';
 
 interface SidebarProps {
   sidebarOpen: boolean;
@@ -242,9 +243,23 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 </NavLink>
               </li>
               {/* <!-- Menu Item Users --> */}
+              {/* <!-- Menu Item Notifications --> */}
+              <li>
+                <NavLink
+                  to="/notifications"
+                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
+                    pathname.includes('notifications') && 'bg-graydark dark:bg-meta-4'
+                  }`}
+                >
+                  <BiSolidNotification />
+                  Notifications
+                </NavLink>
+              </li>
+              {/* <!-- Menu Item Notifications --> */}
             </ul>
           </div>
         </nav>
+
         {/* <!-- Sidebar Menu --> */}
       </div>
     </aside>
