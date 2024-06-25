@@ -25,7 +25,16 @@ const fetchFlights = async () => {
 };
 
 const fetchAirports = async () => {
-  const response = await axios.get('http://localhost:2000/api/v1/airports');
+  let token = getCookie('_token');
+  const response = await axios.get(
+    // 'https://backend-skyfly-c1.vercel.app/api/v1/flights?limit=50',
+    'http://localhost:2000/api/v1/airports',
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    },
+  );
   return response.data.data;
 };
 
@@ -89,13 +98,6 @@ const TableFlights = () => {
 
   const formatPrice = (price: number) => {
     return `Rp ${price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`;
-  };
-
-  const parsePrice = (formattedPrice: string): number => {
-    // Remove non-numeric characters
-    const numericString = formattedPrice.replace(/[^\d]/g, '');
-    // Parse the numeric string to an integer
-    return parseInt(numericString, 10);
   };
 
   const handleDelete = async (id: string) => {

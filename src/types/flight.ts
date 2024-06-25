@@ -22,6 +22,7 @@ export type Flight = {
   departureDate: string;
   departureTime: string;
   code: string;
+  departureAirport: Airport;
   departureAirportId: Airport;
   transit: {
     transitAirport: Airport;
@@ -32,6 +33,7 @@ export type Flight = {
   };
   arrivalDate: string;
   arrivalTime: string;
+  destinationAirport: Airport;
   destinationAirportId: Airport;
   capacity: number;
   discount: null | number;
