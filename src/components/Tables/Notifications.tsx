@@ -8,11 +8,21 @@ const API_BASE_URL =
 
 const fetchNotifications = async () => {
   const token = getCookie('_token');
-  const response = await axios.get(`${API_BASE_URL}?limit=20`, {
-    headers: { Authorization: `Bearer ${token}` },
-  });
-  return response.data.data;
+  try {
+    const response = await axios.get(`${API_BASE_URL}?limit=20&sort=asc`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    // Jika server tidak melakukan pengurutan, Anda bisa mengurutkan di sini
+    const sortedData = response.data.data.sort((a, b) => {
+      return new Date(a.date) - new Date(b.date); // Mengurutkan berdasarkan tanggal ascending
+    });
+    return sortedData;
+  } catch (error) {
+    console.error('Error fetching notifications:', error);
+    return [];
+  }
 };
+
 
 const deleteNotification = async (id, onCompleted) => {
   const token = getCookie('_token');
@@ -176,7 +186,11 @@ const EditModal = ({ notification, onUpdate }) => (
             name="notificationsContent"
             defaultValue={notification.notificationsContent}
           />
-          <FormField name="date" defaultValue={notification.date} />
+          <FormField
+            name="date"
+            defaultValue={notification.date}
+            readOnly={true}
+          />
           <input
             type="submit"
             value="Update"
@@ -198,7 +212,7 @@ const EditModal = ({ notification, onUpdate }) => (
   </dialog>
 );
 
-const FormField = ({ name, defaultValue }) => (
+const FormField = ({ name, defaultValue, readOnly }) => (
   <label className="input input-bordered flex items-center gap-2 my-2 bg-white dark:bg-boxdark">
     <input
       type="text"
@@ -206,6 +220,7 @@ const FormField = ({ name, defaultValue }) => (
       placeholder={name}
       name={name}
       defaultValue={defaultValue}
+      readOnly={readOnly}
     />
   </label>
 );
