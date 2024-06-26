@@ -13,8 +13,8 @@ import { getCookie } from 'typescript-cookie';
 const fetchFlights = async () => {
   let token = getCookie('_token');
   const response = await axios.get(
-    // 'https://backend-skyfly-c1.vercel.app/api/v1/flights?limit=50',
-    'http://localhost:2000/api/v1/flights?limit=100',
+    'https://backend-skyfly-c1.vercel.app/api/v1/flights?limit=50',
+    // 'http://localhost:2000/api/v1/flights?limit=100',
     {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -27,8 +27,8 @@ const fetchFlights = async () => {
 const fetchAirports = async () => {
   let token = getCookie('_token');
   const response = await axios.get(
-    // 'https://backend-skyfly-c1.vercel.app/api/v1/flights?limit=50',
-    'http://localhost:2000/api/v1/airports',
+    'https://backend-skyfly-c1.vercel.app/api/v1/airports',
+    // 'http://localhost:2000/api/v1/airports',
     {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -40,11 +40,21 @@ const fetchAirports = async () => {
 
 const updateFlights = async (e: React.ChangeEvent<any>) => {
   e.preventDefault();
+  const combineDateTime = (date: string, time: string) => {
+    return new Date(`${date}T${time}:00`).toISOString();
+  };
+
   let id = e.target.id.value;
   let data: Partial<Flight> = {
-    departureDate: e.target.departureDate.value,
+    departureDate: combineDateTime(
+      e.target.departureDate.value,
+      e.target.departureTime.value,
+    ),
     departureAirportId: e.target.departureAirportId.value,
-    arrivalDate: e.target.arrivalDate.value,
+    arrivalDate: combineDateTime(
+      e.target.arrivalDate.value,
+      e.target.arrivalTime.value,
+    ),
     destinationAirportId: e.target.destinationAirportId.value,
     capacity: e.target.capacity.value,
     discount: e.target.discount.value,
@@ -57,7 +67,7 @@ const updateFlights = async (e: React.ChangeEvent<any>) => {
 
   try {
     let token = getCookie('_token');
-    await axios.put(`http://localhost:2000/api/v1/flights/${id}`, data, {
+    await axios.put(`https://backend-skyfly-c1.vercel.app/api/v1/flights/${id}`, data, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -71,8 +81,8 @@ const updateFlights = async (e: React.ChangeEvent<any>) => {
 const deleteFlights = async (id: string) => {
   let token = getCookie('_token');
   const response = await axios.delete(
-    // 'https://backend-skyfly-c1.vercel.app/api/v1/flights?limit=50',
-    `http://localhost:2000/api/v1/flights/${id}`,
+    `https://backend-skyfly-c1.vercel.app/api/v1/flights/${id}`,
+    // `http://localhost:2000/api/v1/flights/${id}`,
     {
       headers: {
         Authorization: `Bearer ${token}`,

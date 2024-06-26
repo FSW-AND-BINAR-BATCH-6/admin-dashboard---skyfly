@@ -19,6 +19,7 @@ export type Plane = {
 export type Flight = {
   id: string;
   plane: Plane;
+  planeId: Plane;
   departureDate: string;
   departureTime: string;
   code: string;
