@@ -5,6 +5,7 @@ import { BsEye } from 'react-icons/bs';
 
 import React, { useEffect, useState } from 'react';
 import { getCookie } from 'typescript-cookie';
+import toast from 'react-hot-toast';
 
 const fetchUsers = async () => {
   let token = getCookie('_token');
@@ -42,8 +43,8 @@ const updateUser = async (e: React.ChangeEvent<any>) => {
     // password: e.target.password.value,
     familyName: e.target.familyName.value,
     phoneNumber: e.target.phoneNumber.value,
-    // isVerified: e.target.isVerified.value,
-    // role: e.target.role.value,
+    isVerified: e.target.isVerified.value,
+    role: e.target.role.value,
   };
 
   let token = getCookie('_token');
@@ -63,12 +64,36 @@ const updateUser = async (e: React.ChangeEvent<any>) => {
 
 const TableUsers = () => {
   const [users, setUsers] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState<Boolean>(true);
 
   useEffect(() => {
-    fetchUsers().then((data) => {
-      setUsers(data);
-    });
+    const fetchData = async () => {
+      try {
+        const usersData = await fetchUsers();
+
+        setUsers(usersData);
+      } catch (error) {
+        toast.error('Fetching Data is Failed!', {
+          style: {
+            backgroundColor: 'red',
+            color: 'white',
+          },
+          iconTheme: {
+            primary: 'white',
+            secondary: 'red',
+          },
+        });
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
   }, []);
+
+  if (isLoading) {
+    return <>Loading...</>;
+  }
 
   return (
     <>

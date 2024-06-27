@@ -5,8 +5,6 @@ import Loader from './common/Loader';
 import PageTitle from './components/PageTitle';
 import SignIn from './pages/Authentication/SignIn';
 import Dashboard from './pages/Dashboard';
-import FormElements from './pages/Form/FormElements';
-import FormLayout from './pages/Form/FormLayout';
 import Profile from './pages/Profile';
 import Settings from './pages/Settings';
 import Tables from './pages/Users';
@@ -80,24 +78,6 @@ function App() {
                 <>
                   <PageTitle title="Profile | SkyFly Admin" />
                   <Profile />
-                </>
-              }
-            />
-            <Route
-              path="/forms/form-elements"
-              element={
-                <>
-                  <PageTitle title="Form Elements | TailAdmin - Tailwind CSS Admin Dashboard Template" />
-                  <FormElements />
-                </>
-              }
-            />
-            <Route
-              path="/forms/form-layout"
-              element={
-                <>
-                  <PageTitle title="Form Layout | TailAdmin - Tailwind CSS Admin Dashboard Template" />
-                  <FormLayout />
                 </>
               }
             />

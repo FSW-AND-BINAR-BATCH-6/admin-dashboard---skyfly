@@ -9,6 +9,7 @@ import { BsBuildingsFill } from 'react-icons/bs';
 import React, { useEffect, useState } from 'react';
 import { Flight, Airport } from '../../types/flight';
 import { getCookie } from 'typescript-cookie';
+import toast from 'react-hot-toast';
 
 const fetchFlights = async () => {
   let token = getCookie('_token');
@@ -67,11 +68,15 @@ const updateFlights = async (e: React.ChangeEvent<any>) => {
 
   try {
     let token = getCookie('_token');
-    await axios.put(`https://backend-skyfly-c1.vercel.app/api/v1/flights/${id}`, data, {
-      headers: {
-        Authorization: `Bearer ${token}`,
+    await axios.put(
+      `https://backend-skyfly-c1.vercel.app/api/v1/flights/${id}`,
+      data,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       },
-    });
+    );
     alert('Flight updated successfully');
   } catch (error) {
     console.error('Error updating flight:', error);
@@ -96,14 +101,33 @@ const deleteFlights = async (id: string) => {
 const TableFlights = () => {
   const [flights, setFlights] = useState<Flight[]>([]);
   const [airports, setAirports] = useState<Airport[]>([]);
+  const [isLoading, setIsLoading] = useState<Boolean>(true);
 
   useEffect(() => {
-    fetchFlights().then((data) => {
-      setFlights(data);
-    });
-    fetchAirports().then((data) => {
-      setAirports(data);
-    });
+    const fetchData = async () => {
+      try {
+        const flightData = await fetchFlights();
+        const airportData = await await fetchAirports();
+
+        setFlights(flightData);
+        setAirports(airportData);
+      } catch (error) {
+        toast.error('Fetching Data is Failed!', {
+          style: {
+            backgroundColor: 'red',
+            color: 'white',
+          },
+          iconTheme: {
+            primary: 'white',
+            secondary: 'red',
+          },
+        });
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
   }, []);
 
   const formatPrice = (price: number) => {
@@ -123,6 +147,10 @@ const TableFlights = () => {
       console.error('Error deleting flight:', error);
     }
   };
+
+  if (isLoading) {
+    return <>Loading...</>;
+  }
 
   return (
     <>

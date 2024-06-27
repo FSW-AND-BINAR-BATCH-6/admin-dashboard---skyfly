@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { BsFillPencilFill, BsFillTrash3Fill, BsEye } from 'react-icons/bs';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { getCookie } from 'typescript-cookie';
 
 const API_BASE_URL =
@@ -12,9 +12,9 @@ const fetchNotifications = async () => {
     const response = await axios.get(`${API_BASE_URL}?limit=20&sort=asc`, {
       headers: { Authorization: `Bearer ${token}` },
     });
-    // Jika server tidak melakukan pengurutan, Anda bisa mengurutkan di sini
-    const sortedData = response.data.data.sort((a, b) => {
-      return new Date(a.date) - new Date(b.date); // Mengurutkan berdasarkan tanggal ascending
+
+    const sortedData = response.data.data.sort((a: any, b: any) => {
+      return new Date(a.date) - new Date(b.date);
     });
     return sortedData;
   } catch (error) {
@@ -23,8 +23,7 @@ const fetchNotifications = async () => {
   }
 };
 
-
-const deleteNotification = async (id, onCompleted) => {
+const deleteNotification = async (id: string, onCompleted: Function) => {
   const token = getCookie('_token');
   await axios.delete(`${API_BASE_URL}/${id}`, {
     headers: { Authorization: `Bearer ${token}` },
@@ -32,7 +31,7 @@ const deleteNotification = async (id, onCompleted) => {
   onCompleted();
 };
 
-const updateNotification = async (e, onCompleted) => {
+const updateNotification = async (e, onCompleted: Function) => {
   e.preventDefault();
   const { id, type, notificationsTitle, notificationsContent } =
     e.target.elements;
@@ -227,11 +226,22 @@ const FormField = ({ name, defaultValue, readOnly }) => (
 
 const TableNotifications = () => {
   const [notifications, setNotifications] = useState([]);
+  const [isLoading, setIsLoading] = useState<Boolean>(true);
   const [refresh, setRefresh] = useState(false);
 
   useEffect(() => {
-    fetchNotifications().then(setNotifications);
+    try {
+      fetchNotifications().then(setNotifications);
+    } catch (e) {
+      console.log('Failed Fetch');
+    } finally {
+      setIsLoading(false);
+    }
   }, [refresh]);
+
+  if (isLoading) {
+    return <>Loading...</>;
+  }
 
   return (
     <div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
