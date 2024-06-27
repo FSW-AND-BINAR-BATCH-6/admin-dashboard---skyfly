@@ -10,6 +10,7 @@ import React, { useEffect, useState } from 'react';
 import { Flight, Airport } from '../../types/flight';
 import { getCookie } from 'typescript-cookie';
 import toast from 'react-hot-toast';
+import Loader from '../../common/Loader';
 
 const fetchFlights = async () => {
   let token = getCookie('_token');
@@ -149,7 +150,7 @@ const TableFlights = () => {
   };
 
   if (isLoading) {
-    return <>Loading...</>;
+    return <Loader />;
   }
 
   return (

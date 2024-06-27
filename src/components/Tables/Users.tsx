@@ -6,6 +6,7 @@ import { BsEye } from 'react-icons/bs';
 import React, { useEffect, useState } from 'react';
 import { getCookie } from 'typescript-cookie';
 import toast from 'react-hot-toast';
+import Loader from '../../common/Loader';
 
 const fetchUsers = async () => {
   let token = getCookie('_token');
@@ -92,7 +93,7 @@ const TableUsers = () => {
   }, []);
 
   if (isLoading) {
-    return <>Loading...</>;
+    return <Loader />;
   }
 
   return (
