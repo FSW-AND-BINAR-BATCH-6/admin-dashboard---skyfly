@@ -10,6 +10,7 @@ import FormLayout from './pages/Form/FormLayout';
 import Profile from './pages/Profile';
 import Settings from './pages/Settings';
 import Tables from './pages/Users';
+import TablesNotifications from './pages/Notification';
 import Flights from './pages/Flights';
 import DefaultLayout from './layout/DefaultLayout';
 import { Toaster } from 'react-hot-toast';
@@ -110,6 +111,15 @@ function App() {
               }
             />
             <Route
+              path="/notifications"
+              element={
+                <>
+                  <PageTitle title="Notifications | SkyFly Admin" />
+                  <TablesNotifications />
+                </>
+              }
+            />
+            <Route
               path="/flights"
               element={
                 <>
@@ -118,6 +128,7 @@ function App() {
                 </>
               }
             />
+
             <Route
               path="/settings"
               element={
