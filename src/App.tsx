@@ -11,6 +11,7 @@ import Profile from './pages/Profile';
 import Settings from './pages/Settings';
 import Tables from './pages/Users';
 import TablesNotifications from './pages/Notification';
+import Flights from './pages/Flights';
 import DefaultLayout from './layout/DefaultLayout';
 import { Toaster } from 'react-hot-toast';
 import { getCookie } from 'typescript-cookie';
@@ -118,6 +119,16 @@ function App() {
                 </>
               }
             />
+            <Route
+              path="/flights"
+              element={
+                <>
+                  <PageTitle title="Flight | SkyFly Admin" />
+                  <Flights />
+                </>
+              }
+            />
+
             <Route
               path="/settings"
               element={

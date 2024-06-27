@@ -3,7 +3,7 @@ import { NavLink, useLocation } from 'react-router-dom';
 import SidebarLinkGroup from './SidebarLinkGroup';
 import Logo from '../../images/logo/logo.svg';
 
-import { BiSolidDashboard } from 'react-icons/bi';
+import { BiSolidDashboard, BiSolidPaperPlane } from 'react-icons/bi';
 import { BiSolidUser } from 'react-icons/bi';
 import { BiSolidNotification } from 'react-icons/bi';
 
@@ -256,6 +256,20 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 </NavLink>
               </li>
               {/* <!-- Menu Item Notifications --> */}
+
+              {/* <!-- Menu Item Flights --> */}
+              <li>
+                <NavLink
+                  to="/flights"
+                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
+                    pathname.includes('flights') && 'bg-graydark dark:bg-meta-4'
+                  }`}
+                >
+                  <BiSolidPaperPlane />
+                  Flights
+                </NavLink>
+              </li>
+              {/* <!-- Menu Item Flights --> */}
             </ul>
           </div>
         </nav>
