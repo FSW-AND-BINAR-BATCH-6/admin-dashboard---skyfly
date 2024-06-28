@@ -1,9 +1,9 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
-import Logo from '../../images/logo/logo.svg';
+import Logo from '/public/assets/logo.png';
 
 import { BiSolidDashboard, BiSolidPaperPlane } from 'react-icons/bi';
-import { BiCoin } from "react-icons/bi";
+import { BiCoin } from 'react-icons/bi';
 import { BiSolidUser } from 'react-icons/bi';
 import { BiSolidNotification } from 'react-icons/bi';
 
@@ -98,10 +98,10 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 
       <div className="no-scrollbar flex flex-col overflow-y-auto duration-300 ease-linear">
         {/* <!-- Sidebar Menu --> */}
-        <nav className="mt-5 py-4 px-4 lg:mt-9 lg:px-6">
+        <nav className="mt-2 py-4 px-4 lg:mt-9 lg:px-6">
           {/* <!-- Menu Group --> */}
           <div>
-            <h3 className="mb-4 ml-4 text-sm font-semibold text-bodydark2">
+            <h3 className="mb-2 ml-4 text-sm font-semibold text-bodydark2">
               SKY FLY - ADMIN
             </h3>
 
@@ -169,14 +169,15 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 <NavLink
                   to="/transactions"
                   className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-                    pathname.includes('transactions') && 'bg-graydark dark:bg-meta-4'
+                    pathname.includes('transactions') &&
+                    'bg-graydark dark:bg-meta-4'
                   }`}
                 >
                   <BiCoin />
                   Transactions
                 </NavLink>
               </li>
-              
+
               {/* <!-- Menu Item Transactions --> */}
             </ul>
           </div>

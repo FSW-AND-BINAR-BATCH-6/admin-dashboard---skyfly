@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import LogoDark from '../../images/logo/logo-dark.svg';
-import Logo from '../../images/logo/logo.svg';
+import Logo from '/public/assets/logo.png';
 import { LoginAtom } from '../../atoms/LoginAtom';
 import axios from 'axios';
 import { useSetAtom } from 'jotai';
@@ -76,7 +75,7 @@ const SignIn: React.FC = () => {
             <div className="px-26 text-center">
               <Link className="mb-5.5 inline-block" to="/">
                 <img className="hidden dark:block" src={Logo} alt="Logo" />
-                <img className="dark:hidden" src={LogoDark} alt="Logo" />
+                <img className="dark:hidden w-24" src={Logo} alt="Logo" />
               </Link>
 
               <p className="2xl:px-20">

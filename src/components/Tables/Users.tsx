@@ -10,15 +10,16 @@ import Loader from '../../common/Loader';
 
 const fetchUsers = async () => {
   let token = getCookie('_token');
-  console.log('token', token)
+  console.log('fetching...');
   const response = await axios.get(
-    'http://localhost:2000/api/v1/users?limit=5000',
+    'https://backend-skyfly-c1.vercel.app/api/v1/users?limit=5000',
     {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     },
   );
+  console.log(response);
   return response.data.data;
 };
 
@@ -41,10 +42,10 @@ const updateUser = async (e: React.ChangeEvent<any>) => {
   let id = e.target.id.value;
   let data = {
     name: e.target.name.value,
-    // password: e.target.password.value,
+    password: e.target.password.value,
     familyName: e.target.familyName.value,
     phoneNumber: e.target.phoneNumber.value,
-    isVerified: e.target.isVerified.value,
+    isVerified: e.target.isVerified.value === 'true' ? true : false,
     role: e.target.role.value,
   };
 
@@ -385,8 +386,8 @@ const TableUsers = () => {
                                       ? 'verified'
                                       : 'un-verified'}
                                   </option>
-                                  <option value="1">Verified</option>
-                                  <option value="0">Unverified</option>
+                                  <option value={'true'}>Verified</option>
+                                  <option value={'false'}>Unverified</option>
                                 </select>
                                 {/* role */}
                                 <select
