@@ -22,13 +22,14 @@ function App() {
   const [loading, setLoading] = useState<boolean>(true);
   const { pathname } = useLocation();
   let isLogin: any = getCookie('isLogin') || false;
-  console.log(isLogin);
+  console.log('isLogin: ' + isLogin);
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [pathname]);
 
   useEffect(() => {
     setTimeout(() => setLoading(false), 1000);
+    console.log('isLogin: ' + isLogin);
   }, []);
 
   return loading ? (

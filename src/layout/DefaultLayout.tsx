@@ -9,10 +9,10 @@ import { redirect } from 'react-router-dom';
 const DefaultLayout: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const setIsLogin = useSetAtom(LoginAtom);
-
+  let isLogin: any = getCookie('isLogin') || false;
   let token = getCookie('_token');
 
-  if (token === null || token === undefined || token === '') {
+  if ((token === null || token === undefined) && isLogin === false) {
     setIsLogin({
       isLogin: false,
       token: null,
