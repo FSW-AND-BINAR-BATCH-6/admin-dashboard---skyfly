@@ -384,19 +384,13 @@ const TableAirlines = () => {
                                   >
                                     Update
                                   </button>
-                                  <button
-                                    className="btn btn-ghost"
-                                    type="button"
-                                    onClick={() =>
-                                      document
-                                        .getElementById(
-                                          `edit_modal-${airline.id}`,
-                                        )!
-                                        .close()
-                                    }
-                                  >
-                                    Cancel
-                                  </button>
+                                  <div className="modal-action">
+                                    <form method="dialog">
+                                      <button className="btn btn-ghost">
+                                        Close
+                                      </button>
+                                    </form>
+                                  </div>
                                 </div>
                               </form>
                             </div>

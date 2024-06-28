@@ -5,12 +5,9 @@ import Logo from '/public/assets/logo.png';
 import { BiSolidDashboard, BiSolidPaperPlane } from 'react-icons/bi';
 import { BiCoin } from 'react-icons/bi';
 import { BiSolidUser } from 'react-icons/bi';
-<<<<<<< HEAD
 import { IoIosAirplane } from 'react-icons/io';
 import { CiAirportSign1 } from 'react-icons/ci';
-=======
 import { BiSolidNotification } from 'react-icons/bi';
->>>>>>> b4605b4cd999dd02463a4c0fba5c5b91b24ab333
 
 interface SidebarProps {
   sidebarOpen: boolean;
@@ -140,7 +137,6 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               </li>
 
               {/* <!-- Menu Item Users --> */}
-<<<<<<< HEAD
 
               {/* <!-- Menu Item Airlines --> */}
               <li>
@@ -171,7 +167,6 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 </NavLink>
               </li>
               {/* <!-- Menu Item Airports --> */}
-=======
               {/* <!-- Menu Item Notifications --> */}
               <li>
                 <NavLink
@@ -216,7 +211,6 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               </li>
 
               {/* <!-- Menu Item Transactions --> */}
->>>>>>> b4605b4cd999dd02463a4c0fba5c5b91b24ab333
             </ul>
           </div>
         </nav>
