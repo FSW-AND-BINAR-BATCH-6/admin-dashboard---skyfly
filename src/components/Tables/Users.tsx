@@ -10,15 +10,15 @@ import Loader from '../../common/Loader';
 
 const fetchUsers = async () => {
   let token = getCookie('_token');
+  console.log('token', token)
   const response = await axios.get(
-    'https://backend-skyfly-c1.vercel.app/api/v1/users?limit=5000',
+    'http://localhost:2000/api/v1/users?limit=5000',
     {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     },
   );
-
   return response.data.data;
 };
 

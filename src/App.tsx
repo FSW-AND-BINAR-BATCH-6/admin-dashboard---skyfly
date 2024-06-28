@@ -13,6 +13,8 @@ import Flights from './pages/Flights';
 import DefaultLayout from './layout/DefaultLayout';
 import { Toaster } from 'react-hot-toast';
 import { getCookie } from 'typescript-cookie';
+import TablesUser from './pages/Users';
+import TablesTransaction from './pages/Transactions';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -86,7 +88,16 @@ function App() {
               element={
                 <>
                   <PageTitle title="Users | SkyFly Admin" />
-                  <Tables />
+                  <TablesUser />
+                </>
+              }
+            />
+            <Route
+              path="/transactions"
+              element={
+                <>
+                  <PageTitle title="Transactions | SkyFly Admin" />
+                  <TablesTransaction />
                 </>
               }
             />

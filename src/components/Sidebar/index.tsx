@@ -3,6 +3,7 @@ import { NavLink, useLocation } from 'react-router-dom';
 import Logo from '../../images/logo/logo.svg';
 
 import { BiSolidDashboard, BiSolidPaperPlane } from 'react-icons/bi';
+import { BiCoin } from "react-icons/bi";
 import { BiSolidUser } from 'react-icons/bi';
 import { BiSolidNotification } from 'react-icons/bi';
 
@@ -132,6 +133,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                   Users
                 </NavLink>
               </li>
+
               {/* <!-- Menu Item Users --> */}
               {/* <!-- Menu Item Notifications --> */}
               <li>
@@ -161,6 +163,21 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 </NavLink>
               </li>
               {/* <!-- Menu Item Flights --> */}
+
+              {/* <!-- Menu Item Transactions --> */}
+              <li>
+                <NavLink
+                  to="/transactions"
+                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
+                    pathname.includes('transactions') && 'bg-graydark dark:bg-meta-4'
+                  }`}
+                >
+                  <BiCoin />
+                  Transactions
+                </NavLink>
+              </li>
+              
+              {/* <!-- Menu Item Transactions --> */}
             </ul>
           </div>
         </nav>
