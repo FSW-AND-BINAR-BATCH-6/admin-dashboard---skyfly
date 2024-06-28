@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { getCookie } from 'typescript-cookie';
 import Loader1 from '../Loader';
+import Loader from '../../common/Loader';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import {
@@ -147,7 +148,7 @@ const TableAirports = () => {
   }, []);
 
   if (isLoading) {
-    return <Loader1 />;
+    return <Loader />;
   }
 
   return (
