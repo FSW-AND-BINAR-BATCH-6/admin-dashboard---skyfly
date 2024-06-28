@@ -5,16 +5,18 @@ import Loader from './common/Loader';
 import PageTitle from './components/PageTitle';
 import SignIn from './pages/Authentication/SignIn';
 import Dashboard from './pages/Dashboard';
-import FormElements from './pages/Form/FormElements';
-import FormLayout from './pages/Form/FormLayout';
 import Profile from './pages/Profile';
 import Settings from './pages/Settings';
 import Tables from './pages/Users';
+import TablesNotifications from './pages/Notification';
+import Flights from './pages/Flights';
 import DefaultLayout from './layout/DefaultLayout';
 import { Toaster } from 'react-hot-toast';
 import { getCookie } from 'typescript-cookie';
 import TableAirlines from './components/Tables/Airlines';
 import TableAirports from './components/Tables/Airports';
+import TablesUser from './pages/Users';
+import TablesTransaction from './pages/Transactions';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -84,29 +86,29 @@ function App() {
               }
             />
             <Route
-              path="/forms/form-elements"
-              element={
-                <>
-                  <PageTitle title="Form Elements | TailAdmin - Tailwind CSS Admin Dashboard Template" />
-                  <FormElements />
-                </>
-              }
-            />
-            <Route
-              path="/forms/form-layout"
-              element={
-                <>
-                  <PageTitle title="Form Layout | TailAdmin - Tailwind CSS Admin Dashboard Template" />
-                  <FormLayout />
-                </>
-              }
-            />
-            <Route
               path="/users"
               element={
                 <>
                   <PageTitle title="Users | SkyFly Admin" />
-                  <Tables />
+                  <TablesUser />
+                </>
+              }
+            />
+            <Route
+              path="/transactions"
+              element={
+                <>
+                  <PageTitle title="Transactions | SkyFly Admin" />
+                  <TablesTransaction />
+                </>
+              }
+            />
+            <Route
+              path="/notifications"
+              element={
+                <>
+                  <PageTitle title="Notifications | SkyFly Admin" />
+                  <TablesNotifications />
                 </>
               }
             />
@@ -128,6 +130,16 @@ function App() {
                 </>
               }
             />
+            <Route
+              path="/flights"
+              element={
+                <>
+                  <PageTitle title="Flight | SkyFly Admin" />
+                  <Flights />
+                </>
+              }
+            />
+
             <Route
               path="/settings"
               element={

@@ -5,9 +5,12 @@ import { BsEye } from 'react-icons/bs';
 
 import React, { useEffect, useState } from 'react';
 import { getCookie } from 'typescript-cookie';
+import toast from 'react-hot-toast';
+import Loader from '../../common/Loader';
 
 const fetchUsers = async () => {
   let token = getCookie('_token');
+  console.log('fetching...');
   const response = await axios.get(
     'https://backend-skyfly-c1.vercel.app/api/v1/users?limit=5000',
     {
@@ -16,7 +19,7 @@ const fetchUsers = async () => {
       },
     },
   );
-
+  console.log(response);
   return response.data.data;
 };
 
@@ -39,11 +42,11 @@ const updateUser = async (e: React.ChangeEvent<any>) => {
   let id = e.target.id.value;
   let data = {
     name: e.target.name.value,
-    // password: e.target.password.value,
+    password: e.target.password.value,
     familyName: e.target.familyName.value,
     phoneNumber: e.target.phoneNumber.value,
-    // isVerified: e.target.isVerified.value,
-    // role: e.target.role.value,
+    isVerified: e.target.isVerified.value === 'true' ? true : false,
+    role: e.target.role.value,
   };
 
   let token = getCookie('_token');
@@ -63,12 +66,36 @@ const updateUser = async (e: React.ChangeEvent<any>) => {
 
 const TableUsers = () => {
   const [users, setUsers] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState<Boolean>(true);
 
   useEffect(() => {
-    fetchUsers().then((data) => {
-      setUsers(data);
-    });
+    const fetchData = async () => {
+      try {
+        const usersData = await fetchUsers();
+
+        setUsers(usersData);
+      } catch (error) {
+        toast.error('Fetching Data is Failed!', {
+          style: {
+            backgroundColor: 'red',
+            color: 'white',
+          },
+          iconTheme: {
+            primary: 'white',
+            secondary: 'red',
+          },
+        });
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
   }, []);
+
+  if (isLoading) {
+    return <Loader />;
+  }
 
   return (
     <>
@@ -247,6 +274,7 @@ const TableUsers = () => {
                                   defaultValue={user.id}
                                 />
                                 {/* name */}
+
                                 <label className="input input-bordered flex items-center gap-2 my-2 bg-white dark:bg-boxdark">
                                   <svg
                                     xmlns="http://www.w3.org/2000/svg"
@@ -358,8 +386,8 @@ const TableUsers = () => {
                                       ? 'verified'
                                       : 'un-verified'}
                                   </option>
-                                  <option value="1">Verified</option>
-                                  <option value="0">Unverified</option>
+                                  <option value={'true'}>Verified</option>
+                                  <option value={'false'}>Unverified</option>
                                 </select>
                                 {/* role */}
                                 <select

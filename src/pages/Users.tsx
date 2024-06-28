@@ -1,7 +1,7 @@
 import Breadcrumb from '../components/Breadcrumbs/Breadcrumb';
 import TableUsers from '../components/Tables/Users';
 
-const Tables = () => {
+const TablesUser = () => {
   return (
     <>
       <Breadcrumb pageName="Users" />
@@ -13,4 +13,4 @@ const Tables = () => {
   );
 };
 
-export default Tables;
+export default TablesUser;
