@@ -5,7 +5,12 @@ import Logo from '/public/assets/logo.png';
 import { BiSolidDashboard, BiSolidPaperPlane } from 'react-icons/bi';
 import { BiCoin } from 'react-icons/bi';
 import { BiSolidUser } from 'react-icons/bi';
+<<<<<<< HEAD
+import { IoIosAirplane } from 'react-icons/io';
+import { CiAirportSign1 } from 'react-icons/ci';
+=======
 import { BiSolidNotification } from 'react-icons/bi';
+>>>>>>> b4605b4cd999dd02463a4c0fba5c5b91b24ab333
 
 interface SidebarProps {
   sidebarOpen: boolean;
@@ -135,6 +140,38 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               </li>
 
               {/* <!-- Menu Item Users --> */}
+<<<<<<< HEAD
+
+              {/* <!-- Menu Item Airlines --> */}
+              <li>
+                <NavLink
+                  to="/airlines"
+                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
+                    pathname.includes('airlines') &&
+                    'bg-graydark dark:bg-meta-4'
+                  }`}
+                >
+                  <IoIosAirplane />
+                  Airlines
+                </NavLink>
+              </li>
+              {/* <!-- Menu Item Airlines --> */}
+
+              {/* <!-- Menu Item Airports --> */}
+              <li>
+                <NavLink
+                  to="/airports"
+                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
+                    pathname.includes('airports') &&
+                    'bg-graydark dark:bg-meta-4'
+                  }`}
+                >
+                  <CiAirportSign1 />
+                  Airports
+                </NavLink>
+              </li>
+              {/* <!-- Menu Item Airports --> */}
+=======
               {/* <!-- Menu Item Notifications --> */}
               <li>
                 <NavLink
@@ -179,6 +216,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               </li>
 
               {/* <!-- Menu Item Transactions --> */}
+>>>>>>> b4605b4cd999dd02463a4c0fba5c5b91b24ab333
             </ul>
           </div>
         </nav>
