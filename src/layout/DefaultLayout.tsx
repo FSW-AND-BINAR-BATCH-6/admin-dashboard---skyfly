@@ -2,27 +2,15 @@ import React, { useState, ReactNode } from 'react';
 import Header from '../components/Header/index';
 import Sidebar from '../components/Sidebar/index';
 import { getCookie, removeCookie } from 'typescript-cookie';
-import { useSetAtom } from 'jotai';
-import { LoginAtom } from '../atoms/LoginAtom';
-import { redirect } from 'react-router-dom';
 
 const DefaultLayout: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const setIsLogin = useSetAtom(LoginAtom);
+  let isLogin: any = getCookie('isLogin') || false;
+  let userLoggedIn = JSON.parse(isLogin);
 
-  let token = getCookie('_token');
-
-  if (token === null || token === undefined || token === '') {
-    setIsLogin({
-      isLogin: false,
-      token: null,
-    });
-
-    alert(token);
-    alert('yak');
-
-    removeCookie('_token');
-    redirect('/');
+  if (userLoggedIn.isLogin !== true) {
+    removeCookie('isLogin');
+    window.location.href = '/';
   }
 
   return (

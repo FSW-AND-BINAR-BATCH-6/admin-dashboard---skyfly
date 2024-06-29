@@ -11,7 +11,9 @@ const DropdownUser = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const setIsLogin = useSetAtom(LoginAtom);
 
-  let token = getCookie('_token');
+  let isLogin: any = getCookie('isLogin') || false;
+  let userLogin = JSON.parse(isLogin);
+  let token = userLogin.token;
   const userLoggedIn: any = jwtDecode(token || '');
 
   const handleLogout = () => {
@@ -20,7 +22,6 @@ const DropdownUser = () => {
       token: null,
     });
 
-    removeCookie('_token');
     removeCookie('isLogin');
     window.location.href = '/';
   };

@@ -2,12 +2,15 @@ import axios from 'axios';
 import { BsFillPencilFill, BsFillTrash3Fill, BsEye } from 'react-icons/bs';
 import { useEffect, useState } from 'react';
 import { getCookie } from 'typescript-cookie';
+import Loader from '../../common/Loader';
 
 const API_BASE_URL =
   'https://backend-skyfly-c1.vercel.app/api/v1/notifications';
 
 const fetchNotifications = async () => {
-  const token = getCookie('_token');
+  let isLogin: any = getCookie('isLogin') || false;
+  let userLoggedIn = JSON.parse(isLogin);
+  let token = userLoggedIn.token;
   try {
     const response = await axios.get(`${API_BASE_URL}?limit=20&sort=asc`, {
       headers: { Authorization: `Bearer ${token}` },
@@ -24,7 +27,9 @@ const fetchNotifications = async () => {
 };
 
 const deleteNotification = async (id: string, onCompleted: Function) => {
-  const token = getCookie('_token');
+  let isLogin: any = getCookie('isLogin') || false;
+  let userLoggedIn = JSON.parse(isLogin);
+  let token = userLoggedIn.token;
   await axios.delete(`${API_BASE_URL}/${id}`, {
     headers: { Authorization: `Bearer ${token}` },
   });
@@ -42,7 +47,9 @@ const updateNotification = async (e, onCompleted: Function) => {
     content: notificationsContent.value,
   };
 
-  const token = getCookie('_token');
+  let isLogin: any = getCookie('isLogin') || false;
+  let userLoggedIn = JSON.parse(isLogin);
+  let token = userLoggedIn.token;
   await axios.put(`${API_BASE_URL}/${id.value}`, data, {
     headers: { Authorization: `Bearer ${token}` },
   });
@@ -240,7 +247,7 @@ const TableNotifications = () => {
   }, [refresh]);
 
   if (isLoading) {
-    return <>Loading...</>;
+    return <Loader />;
   }
 
   return (

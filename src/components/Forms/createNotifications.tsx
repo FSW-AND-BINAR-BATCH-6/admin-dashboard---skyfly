@@ -26,7 +26,9 @@ const CreateNotificationForm: React.FC<CreateNotificationFormProps> = ({
     };
 
     try {
-      const token = getCookie('_token');
+      let isLogin: any = getCookie('isLogin') || false;
+      let userLoggedIn = JSON.parse(isLogin);
+      let token = userLoggedIn.token;
       const response = await axios.post(`${API_BASE_URL}`, newNotification, {
         headers: { Authorization: `Bearer ${token}` },
       });

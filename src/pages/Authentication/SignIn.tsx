@@ -1,16 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Logo from '/public/assets/logo.png';
-import { LoginAtom } from '../../atoms/LoginAtom';
 import axios from 'axios';
-import { useSetAtom } from 'jotai';
 import toast from 'react-hot-toast';
 import { jwtDecode } from 'jwt-decode';
 import { setCookie } from 'typescript-cookie';
 
 const SignIn: React.FC = () => {
-  const setIsLogin = useSetAtom(LoginAtom);
-
   const handleSignIn = async (e: React.ChangeEvent<any>) => {
     e.preventDefault();
     let data = {
@@ -27,13 +23,10 @@ const SignIn: React.FC = () => {
       const decoded: any = jwtDecode(response.data._token);
 
       if (decoded && decoded.role === 'ADMIN') {
-        setIsLogin({
-          token: response.data._token,
-          isLogin: true,
-        });
-
-        setCookie('_token', response.data._token);
-        setCookie('isLogin', true);
+        setCookie(
+          'isLogin',
+          JSON.stringify({ token: response.data._token, isLogin: true }),
+        );
         window.location.href = '/';
       } else {
         toast.error("you're not have an access", {

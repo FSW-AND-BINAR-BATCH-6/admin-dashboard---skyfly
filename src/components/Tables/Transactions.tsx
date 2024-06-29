@@ -2,12 +2,12 @@ import axios from 'axios';
 import { BsFillPencilFill } from 'react-icons/bs';
 import { BsFillTrash3Fill } from 'react-icons/bs';
 import { BsEye } from 'react-icons/bs';
-import { BiBaguette } from "react-icons/bi";
-import { FaBitcoin } from "react-icons/fa";
-import { CiBarcode } from "react-icons/ci";
-import { MdOutlineDateRange } from "react-icons/md";
-import { FaRegUserCircle } from "react-icons/fa";
-import { FaKey } from "react-icons/fa";
+import { BiBaguette } from 'react-icons/bi';
+import { FaBitcoin } from 'react-icons/fa';
+import { CiBarcode } from 'react-icons/ci';
+import { MdOutlineDateRange } from 'react-icons/md';
+import { FaRegUserCircle } from 'react-icons/fa';
+import { FaKey } from 'react-icons/fa';
 
 import React, { useEffect, useState } from 'react';
 import { getCookie } from 'typescript-cookie';
@@ -16,7 +16,9 @@ import toast from 'react-hot-toast';
 import Loader from '../../common/Loader';
 
 const fetchTransactions = async () => {
-  let token = getCookie('_token');
+  let isLogin: any = getCookie('isLogin') || false;
+  let userLoggedIn = JSON.parse(isLogin);
+  let token = userLoggedIn.token;
   const response = await axios.get(
     `https://backend-skyfly-c1.vercel.app/api/v1/transactions/admin/admin/admin`,
     {
@@ -24,14 +26,14 @@ const fetchTransactions = async () => {
         Authorization: `Bearer ${token}`,
       },
     },
-
   );
   return response.data.data;
 };
 
-
 const deleteTransaction = async (id: string) => {
-  let token = getCookie('_token');
+  let isLogin: any = getCookie('isLogin') || false;
+  let userLoggedIn = JSON.parse(isLogin);
+  let token = userLoggedIn.token;
   const response = await axios.delete(
     `https://backend-skyfly-c1.vercel.app/api/v1/transactions/${id}`,
     {
@@ -40,7 +42,7 @@ const deleteTransaction = async (id: string) => {
       },
     },
   );
-  alert(response.data.message)
+  alert(response.data.message);
   return response.data.data;
 };
 
@@ -50,32 +52,35 @@ const updateTransaction = async (e: React.ChangeEvent<any>) => {
   let id = e.target.id.value;
 
   let data: Partial<Transaction> = {
-    "totalPrice": Number(e.target.totalPrice.value),
-    "status": e.target.status.value,
-    "tax": Number(e.target.tax.value)
-};
+    totalPrice: Number(e.target.totalPrice.value),
+    status: e.target.status.value,
+    tax: Number(e.target.tax.value),
+  };
 
-  let token = getCookie('_token');
+  let isLogin: any = getCookie('isLogin') || false;
+  let userLoggedIn = JSON.parse(isLogin);
+  let token = userLoggedIn.token;
   let config = {
     method: 'put',
     maxBodyLength: Infinity,
     url: `https://backend-skyfly-c1.vercel.app/api/v1/transactions/${id}`,
-    headers: { 
-      'Content-Type': 'application/json', 
-      'Authorization': `Bearer ${token}`
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
     },
-    data : data
+    data: data,
   };
-  
-  axios.request(config)
-  .then((response) => {
-    console.log(response.data);
-    alert(response.data.message)
-  })
-  .catch((error) => {
-    console.log(error);
-    alert(error)
-  });
+
+  axios
+    .request(config)
+    .then((response) => {
+      console.log(response.data);
+      alert(response.data.message);
+    })
+    .catch((error) => {
+      console.log(error);
+      alert(error);
+    });
 };
 
 const TableTransactions = () => {
@@ -102,7 +107,7 @@ const TableTransactions = () => {
       } finally {
         setIsLoading(false);
       }
-    }
+    };
 
     fetchData();
   }, []);
@@ -121,17 +126,17 @@ const TableTransactions = () => {
         style: {
           backgroundColor: 'red',
           color: 'white',
-          },
-          iconTheme: {
-            primary: 'white',
-            secondary: 'red',
-            },
-            });
+        },
+        iconTheme: {
+          primary: 'white',
+          secondary: 'red',
+        },
+      });
     }
-  }
+  };
 
   if (isLoading) {
-    return <Loader />
+    return <Loader />;
   }
 
   return (
@@ -171,13 +176,13 @@ const TableTransactions = () => {
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                     <p
                       className={`inline-flex rounded-full bg-opacity-10 py-1 px-3 text-sm font-medium ${
-                        transaction?.status == "booked"
+                        transaction?.status == 'booked'
                           ? 'bg-success text-success'
-                          : transaction?.status == "pending"
-                          ?  'bg-warning text-warning' 
-                          : transaction?.status == "settlement" 
+                          : transaction?.status == 'pending'
+                          ? 'bg-warning text-warning'
+                          : transaction?.status == 'settlement'
                           ? 'bg-sky-500 text-white'
-                          :  'bg-danger text-danger' 
+                          : 'bg-danger text-danger'
                       }`}
                     >
                       {transaction?.status}
@@ -213,62 +218,123 @@ const TableTransactions = () => {
 
                             <div className="chat chat-end">
                               <div className="chat-bubble gap-y-5 text-start">
-                                Transaction ID: <strong>{transaction?.id}</strong>
+                                Transaction ID:{' '}
+                                <strong>{transaction?.id}</strong>
                                 <br />
-                                Order ID: <strong>{transaction?.orderId}</strong> <br />
-                                Total Price: <strong>{transaction?.totalPrice}</strong>
+                                Order ID:{' '}
+                                <strong>{transaction?.orderId}</strong> <br />
+                                Total Price:{' '}
+                                <strong>{transaction?.totalPrice}</strong>
                                 <br /> Tax: <strong>{transaction?.tax}</strong>
-                                <br /> Transaction Status: 
+                                <br /> Transaction Status:
                                 <strong>
-                                  {transaction?.status
-                                    ? ' pending' : ' booked'}
+                                  {transaction?.status ? ' pending' : ' booked'}
                                 </strong>
-                                <br /> Booking Date: <strong>{transaction?.bookingDate}</strong>
-                                <br /> Booking Code: <strong>{transaction?.bookingCode}</strong>
-                                <br /> User ID: <strong>{transaction?.userId}</strong>
-                                <br /> Transaction Detail: 
+                                <br /> Booking Date:{' '}
+                                <strong>{transaction?.bookingDate}</strong>
+                                <br /> Booking Code:{' '}
+                                <strong>{transaction?.bookingCode}</strong>
+                                <br /> User ID:{' '}
+                                <strong>{transaction?.userId}</strong>
+                                <br /> Transaction Detail:
                                 <br />
-                                  <div className="overflow-x-auto pt-5">
-                                    <table className="min-w-full divide-y divide-x divide-white border ">
-                                      <thead className="bg-gray-50 border divide-x">
-                                        <tr className='divide-x divide-white'>
-                                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
-                                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Transaction ID</th>
-                                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
-                                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Seat ID</th>
-                                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
-                                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Family Name</th>
-                                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">DOB</th>
-                                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Citizenship</th>
-                                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Passport</th>
-                                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Issuing Country</th>
-                                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Validity Period</th>
-                                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Flight ID</th>
-
-                                        </tr>
-                                      </thead>
-                                      <tbody className="bg-gray-300 divide-y divide-x divide-white border">
-                                        {transaction.Transaction_Detail.map((detail, key) => (
-                                          <tr key={key} className='divide-x divide-white'>
-                                            <td className="px-6 py-4 whitespace-nowrap">{detail.id}</td>
-                                            <td className="px-6 py-4 whitespace-nowrap">{detail.transactionId}</td>
-                                            <td className="px-6 py-4 whitespace-nowrap">{detail.price}</td>
-                                            <td className="px-6 py-4 whitespace-nowrap">{detail.seatId}</td>
-                                            <td className="px-6 py-4 whitespace-nowrap">{detail.name}</td>
-                                            <td className="px-6 py-4 whitespace-nowrap">{detail.type}</td>
-                                            <td className="px-6 py-4 whitespace-nowrap">{detail.familyName}</td>
-                                            <td className="px-6 py-4 whitespace-nowrap">{detail.dob}</td>
-                                            <td className="px-6 py-4 whitespace-nowrap">{detail.citizenship}</td>
-                                            <td className="px-6 py-4 whitespace-nowrap">{detail.passport}</td>
-                                            <td className="px-6 py-4 whitespace-nowrap">{detail.issuingCountry}</td>
-                                            <td className="px-6 py-4 whitespace-nowrap">{detail.validityPeriod}</td>
-                                            <td className="px-6 py-4 whitespace-nowrap">{detail.flightId}</td>
+                                <div className="overflow-x-auto pt-5">
+                                  <table className="min-w-full divide-y divide-x divide-white border ">
+                                    <thead className="bg-gray-50 border divide-x">
+                                      <tr className="divide-x divide-white">
+                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                          ID
+                                        </th>
+                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                          Transaction ID
+                                        </th>
+                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                          Price
+                                        </th>
+                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                          Seat ID
+                                        </th>
+                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                          Name
+                                        </th>
+                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                          Type
+                                        </th>
+                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                          Family Name
+                                        </th>
+                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                          DOB
+                                        </th>
+                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                          Citizenship
+                                        </th>
+                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                          Passport
+                                        </th>
+                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                          Issuing Country
+                                        </th>
+                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                          Validity Period
+                                        </th>
+                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                          Flight ID
+                                        </th>
+                                      </tr>
+                                    </thead>
+                                    <tbody className="bg-gray-300 divide-y divide-x divide-white border">
+                                      {transaction.Transaction_Detail.map(
+                                        (detail, key) => (
+                                          <tr
+                                            key={key}
+                                            className="divide-x divide-white"
+                                          >
+                                            <td className="px-6 py-4 whitespace-nowrap">
+                                              {detail.id}
+                                            </td>
+                                            <td className="px-6 py-4 whitespace-nowrap">
+                                              {detail.transactionId}
+                                            </td>
+                                            <td className="px-6 py-4 whitespace-nowrap">
+                                              {detail.price}
+                                            </td>
+                                            <td className="px-6 py-4 whitespace-nowrap">
+                                              {detail.seatId}
+                                            </td>
+                                            <td className="px-6 py-4 whitespace-nowrap">
+                                              {detail.name}
+                                            </td>
+                                            <td className="px-6 py-4 whitespace-nowrap">
+                                              {detail.type}
+                                            </td>
+                                            <td className="px-6 py-4 whitespace-nowrap">
+                                              {detail.familyName}
+                                            </td>
+                                            <td className="px-6 py-4 whitespace-nowrap">
+                                              {detail.dob}
+                                            </td>
+                                            <td className="px-6 py-4 whitespace-nowrap">
+                                              {detail.citizenship}
+                                            </td>
+                                            <td className="px-6 py-4 whitespace-nowrap">
+                                              {detail.passport}
+                                            </td>
+                                            <td className="px-6 py-4 whitespace-nowrap">
+                                              {detail.issuingCountry}
+                                            </td>
+                                            <td className="px-6 py-4 whitespace-nowrap">
+                                              {detail.validityPeriod}
+                                            </td>
+                                            <td className="px-6 py-4 whitespace-nowrap">
+                                              {detail.flightId}
+                                            </td>
                                           </tr>
-                                        ))}
-                                      </tbody>
-                                    </table>
-                                  </div>
+                                        ),
+                                      )}
+                                    </tbody>
+                                  </table>
+                                </div>
                               </div>
                             </div>
 
@@ -303,7 +369,8 @@ const TableTransactions = () => {
                           <div className="modal-box bg-white dark:bg-boxdark">
                             <h3 className="font-bold text-lg">Delete</h3>
                             <p className="py-4">
-                              Are you sure for deleting '{transaction?.name}' data?
+                              Are you sure for deleting '{transaction?.name}'
+                              data?
                             </p>
                             <div className="modal-action justify-between">
                               <button
@@ -335,8 +402,10 @@ const TableTransactions = () => {
                       >
                         <BsFillPencilFill />
                         {/* Edit Modal */}
-                        <dialog id={`edit_modal-${transaction.id}`} 
-                        className="modal">
+                        <dialog
+                          id={`edit_modal-${transaction.id}`}
+                          className="modal"
+                        >
                           <div className="modal-box bg-white dark:bg-boxdark">
                             <h3 className="font-bold text-lg">Update</h3>
                             <div className="py-4">
@@ -349,7 +418,7 @@ const TableTransactions = () => {
                                 />
                                 {/* orderId */}
                                 <label className="input input-bordered flex items-center gap-2 my-2 bg-white dark:bg-boxdark">
-                                  <FaKey/> Order ID: 
+                                  <FaKey /> Order ID:
                                   <input
                                     type="text"
                                     className="grow"
@@ -361,7 +430,7 @@ const TableTransactions = () => {
                                 </label>
                                 {/* totalPrice */}
                                 <label className="input input-bordered flex items-center gap-2 my-2 bg-white dark:bg-boxdark">
-                                  <FaBitcoin/> Total Price: 
+                                  <FaBitcoin /> Total Price:
                                   <input
                                     type="text"
                                     className="grow"
@@ -372,18 +441,18 @@ const TableTransactions = () => {
                                 </label>
                                 {/* tax */}
                                 <label className="input input-bordered flex items-center gap-2 my-2 bg-white dark:bg-boxdark">
-                                  <BiBaguette/> Tax: 
+                                  <BiBaguette /> Tax:
                                   <input
                                     type="text"
                                     className="grow"
                                     name="tax"
-                                    placeholder='Tax'
+                                    placeholder="Tax"
                                     defaultValue={transaction.tax}
                                   />
                                 </label>
                                 {/* bookingDate */}
                                 <label className="input input-bordered flex items-center gap-2 my-2 bg-white dark:bg-boxdark">
-                                  <MdOutlineDateRange/> Booking Date: 
+                                  <MdOutlineDateRange /> Booking Date:
                                   <input
                                     type="text"
                                     className="grow"
@@ -395,7 +464,7 @@ const TableTransactions = () => {
                                 </label>
                                 {/* bookingCode */}
                                 <label className="input input-bordered flex items-center gap-2 my-2 bg-white dark:bg-boxdark">
-                                  <CiBarcode/> Booking Code: 
+                                  <CiBarcode /> Booking Code:
                                   <input
                                     type="text"
                                     className="grow"
@@ -407,7 +476,8 @@ const TableTransactions = () => {
                                 </label>
                                 {/* userId */}
                                 <label className="input input-bordered flex items-center gap-2 my-2 bg-white dark:bg-boxdark">
-                                  <FaRegUserCircle/>User ID: 
+                                  <FaRegUserCircle />
+                                  User ID:
                                   <input
                                     type="text"
                                     className="grow"
@@ -423,8 +493,7 @@ const TableTransactions = () => {
                                   name="status"
                                 >
                                   <option
-                                    defaultValue={
-                                      transaction?.status}
+                                    defaultValue={transaction?.status}
                                     selected
                                     hidden
                                   >

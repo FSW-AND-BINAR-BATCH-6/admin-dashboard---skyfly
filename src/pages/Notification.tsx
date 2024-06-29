@@ -11,7 +11,10 @@ const API_BASE_URL =
 const TablesNotifications: React.FC = () => {
   const handleCreate = async (newNotification: any) => {
     try {
-      const token = getCookie('_token');
+      let isLogin: any = getCookie('isLogin') || false;
+      let userLoggedIn = JSON.parse(isLogin);
+      let token = userLoggedIn.token;
+
       await axios.post(`${API_BASE_URL}`, newNotification, {
         headers: { Authorization: `Bearer ${token}` },
       });
