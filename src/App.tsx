@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Route, Routes, useLocation } from 'react-router-dom';
+import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 
 import Loader from './common/Loader';
 import PageTitle from './components/PageTitle';
@@ -11,13 +11,14 @@ import TablesNotifications from './pages/Notification';
 import Flights from './pages/Flights';
 import DefaultLayout from './layout/DefaultLayout';
 import { Toaster } from 'react-hot-toast';
-import { getCookie } from 'typescript-cookie';
+import { getCookie, removeCookie, setCookie } from 'typescript-cookie';
 import TableAirlines from './components/Tables/Airlines';
 import TableAirports from './components/Tables/Airports';
 import TablesUser from './pages/Users';
 import TablesTransaction from './pages/Transactions';
 
 function App() {
+  const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(true);
   const { pathname } = useLocation();
   let isLoginData: any = getCookie('isLogin') || false;
@@ -25,12 +26,26 @@ function App() {
   let isLogin = userLoggedIn.isLogin || false;
 
   useEffect(() => {
+    const verifyLogin = async () => {
+      let token = userLoggedIn.token;
+      console.log(token);
+      if (!token) {
+        removeCookie('isLogin');
+        navigate('/signIn');
+        return;
+      }
+      setLoading(false);
+    };
+
+    verifyLogin();
+  }, []);
+
+  useEffect(() => {
     window.scrollTo(0, 0);
   }, [pathname]);
 
   useEffect(() => {
     setTimeout(() => setLoading(false), 1000);
-    console.log('isLogin: ' + isLogin);
   }, []);
 
   return loading ? (
@@ -41,7 +56,7 @@ function App() {
       {!isLogin ? (
         <Routes>
           <Route
-            index
+            path="/signIn"
             element={
               <>
                 <PageTitle title="Signin | Sky Fly Admin" />
@@ -62,19 +77,11 @@ function App() {
         <DefaultLayout>
           <Routes>
             <Route
-              path="/"
+              index
               element={
                 <>
                   <PageTitle title="Dashboard SkyFly" />
                   <Dashboard />
-                </>
-              }
-            />
-            <Route
-              path="*"
-              element={
-                <>
-                  <h1>Not Found</h1>
                 </>
               }
             />
@@ -148,6 +155,14 @@ function App() {
                 <>
                   <PageTitle title="Settings | SkyFly Admin" />
                   <Settings />
+                </>
+              }
+            />
+            <Route
+              path="*"
+              element={
+                <>
+                  <h1>Not Found</h1>
                 </>
               }
             />
