@@ -1,5 +1,11 @@
 import { useEffect, useState } from 'react';
-import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  useLocation,
+  useNavigate,
+} from 'react-router-dom';
 
 import Loader from './common/Loader';
 import PageTitle from './components/PageTitle';
@@ -52,109 +58,16 @@ function App() {
     <Loader />
   ) : (
     <>
-      <Toaster />
-      {!isLogin ? (
-        <Routes>
-          <Route
-            path="/signIn"
-            element={
-              <>
-                <PageTitle title="Signin | Sky Fly Admin" />
-                <SignIn />
-              </>
-            }
-          />
-          <Route
-            path="*"
-            element={
-              <>
-                <h1>Not Found</h1>
-              </>
-            }
-          />
-        </Routes>
-      ) : (
-        <DefaultLayout>
+      <Router>
+        <Toaster />
+        {!isLogin ? (
           <Routes>
             <Route
-              index
+              path="/signIn"
               element={
                 <>
-                  <PageTitle title="Dashboard SkyFly" />
-                  <Dashboard />
-                </>
-              }
-            />
-            <Route
-              path="/profile"
-              element={
-                <>
-                  <PageTitle title="Profile | SkyFly Admin" />
-                  <Profile />
-                </>
-              }
-            />
-            <Route
-              path="/users"
-              element={
-                <>
-                  <PageTitle title="Users | SkyFly Admin" />
-                  <TablesUser />
-                </>
-              }
-            />
-            <Route
-              path="/transactions"
-              element={
-                <>
-                  <PageTitle title="Transactions | SkyFly Admin" />
-                  <TablesTransaction />
-                </>
-              }
-            />
-            <Route
-              path="/notifications"
-              element={
-                <>
-                  <PageTitle title="Notifications | SkyFly Admin" />
-                  <TablesNotifications />
-                </>
-              }
-            />
-            <Route
-              path="/airlines"
-              element={
-                <>
-                  <PageTitle title="Airlines | SkyFly Admin" />
-                  <TableAirlines />
-                </>
-              }
-            />
-            <Route
-              path="/airports"
-              element={
-                <>
-                  <PageTitle title="Airports | SkyFly Admin" />
-                  <TableAirports />
-                </>
-              }
-            />
-            <Route
-              path="/flights"
-              element={
-                <>
-                  <PageTitle title="Flight | SkyFly Admin" />
-                  <Flights />
-                </>
-              }
-            />
-
-            <Route
-              path="/settings"
-              element={
-                <>
-                  <PageTitle title="Settings | SkyFly Admin" />
-                  <Settings />
+                  <PageTitle title="Signin | Sky Fly Admin" />
+                  <SignIn />
                 </>
               }
             />
@@ -167,8 +80,103 @@ function App() {
               }
             />
           </Routes>
-        </DefaultLayout>
-      )}
+        ) : (
+          <DefaultLayout>
+            <Routes>
+              <Route
+                index
+                element={
+                  <>
+                    <PageTitle title="Dashboard SkyFly" />
+                    <Dashboard />
+                  </>
+                }
+              />
+              <Route
+                path="/profile"
+                element={
+                  <>
+                    <PageTitle title="Profile | SkyFly Admin" />
+                    <Profile />
+                  </>
+                }
+              />
+              <Route
+                path="/users"
+                element={
+                  <>
+                    <PageTitle title="Users | SkyFly Admin" />
+                    <TablesUser />
+                  </>
+                }
+              />
+              <Route
+                path="/transactions"
+                element={
+                  <>
+                    <PageTitle title="Transactions | SkyFly Admin" />
+                    <TablesTransaction />
+                  </>
+                }
+              />
+              <Route
+                path="/notifications"
+                element={
+                  <>
+                    <PageTitle title="Notifications | SkyFly Admin" />
+                    <TablesNotifications />
+                  </>
+                }
+              />
+              <Route
+                path="/airlines"
+                element={
+                  <>
+                    <PageTitle title="Airlines | SkyFly Admin" />
+                    <TableAirlines />
+                  </>
+                }
+              />
+              <Route
+                path="/airports"
+                element={
+                  <>
+                    <PageTitle title="Airports | SkyFly Admin" />
+                    <TableAirports />
+                  </>
+                }
+              />
+              <Route
+                path="/flights"
+                element={
+                  <>
+                    <PageTitle title="Flight | SkyFly Admin" />
+                    <Flights />
+                  </>
+                }
+              />
+
+              <Route
+                path="/settings"
+                element={
+                  <>
+                    <PageTitle title="Settings | SkyFly Admin" />
+                    <Settings />
+                  </>
+                }
+              />
+              <Route
+                path="*"
+                element={
+                  <>
+                    <h1>Not Found</h1>
+                  </>
+                }
+              />
+            </Routes>
+          </DefaultLayout>
+        )}
+      </Router>
     </>
   );
 }
