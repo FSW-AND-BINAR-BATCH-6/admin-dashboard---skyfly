@@ -14,7 +14,9 @@ import {
 
 const fetchAirports = async () => {
   try {
-    let token = getCookie('_token');
+    let isLogin: any = getCookie('isLogin') || false;
+    let userLoggedIn = JSON.parse(isLogin);
+    let token = userLoggedIn.token;
     const response = await axios.get(
       'https://backend-skyfly-c1.vercel.app/api/v1/airports?limit=5000',
       {
@@ -32,7 +34,9 @@ const fetchAirports = async () => {
 
 const deleteAirport = async (id: string, navigate: any) => {
   try {
-    let token = getCookie('_token');
+    let isLogin: any = getCookie('isLogin') || false;
+    let userLoggedIn = JSON.parse(isLogin);
+    let token = userLoggedIn.token;
     await axios.delete(
       `https://backend-skyfly-c1.vercel.app/api/v1/airports/${id}`,
       {
@@ -63,7 +67,9 @@ const createAirport = async (e: React.ChangeEvent<any>, navigate: any) => {
       formData.append('image', e.target.image.files[0]);
     }
 
-    let token = getCookie('_token');
+    let isLogin: any = getCookie('isLogin') || false;
+    let userLoggedIn = JSON.parse(isLogin);
+    let token = userLoggedIn.token;
 
     const response = await axios.post(
       'https://backend-skyfly-c1.vercel.app/api/v1/airports',
@@ -102,7 +108,9 @@ const updateAirport = async (e: React.ChangeEvent<any>, navigate: any) => {
       formData.append('image', e.target.image.files[0]);
     }
 
-    let token = getCookie('_token');
+    let isLogin: any = getCookie('isLogin') || false;
+    let userLoggedIn = JSON.parse(isLogin);
+    let token = userLoggedIn.token;
 
     const response = await axios.put(
       `https://backend-skyfly-c1.vercel.app/api/v1/airports/${id}`,
@@ -435,19 +443,13 @@ const TableAirports = () => {
                                   >
                                     Update
                                   </button>
-                                  <button
-                                    className="btn btn-ghost"
-                                    type="button"
-                                    onClick={() =>
-                                      document
-                                        .getElementById(
-                                          `edit_modal-${airport.id}`,
-                                        )!
-                                        .close()
-                                    }
-                                  >
-                                    Cancel
-                                  </button>
+                                  <div className="modal-action">
+                                    <form method="dialog">
+                                      <button className="btn btn-ghost">
+                                        Close
+                                      </button>
+                                    </form>
+                                  </div>
                                 </div>
                               </form>
                             </div>
@@ -555,15 +557,11 @@ const TableAirports = () => {
                 <button className="btn btn-primary" type="submit">
                   Create
                 </button>
-                <button
-                  className="btn btn-ghost"
-                  type="button"
-                  onClick={() =>
-                    document.getElementById('create_modal')!.close()
-                  }
-                >
-                  Cancel
-                </button>
+                <div className="modal-action">
+                  <form method="dialog">
+                    <button className="btn btn-ghost">Close</button>
+                  </form>
+                </div>
               </div>
             </form>
           </div>

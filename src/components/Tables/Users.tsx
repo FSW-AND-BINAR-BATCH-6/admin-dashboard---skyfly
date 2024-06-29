@@ -9,8 +9,10 @@ import toast from 'react-hot-toast';
 import Loader from '../../common/Loader';
 
 const fetchUsers = async () => {
-  let token = getCookie('_token');
-  console.log('fetching...');
+  let isLogin: any = getCookie('isLogin') || false;
+  let userLoggedIn = JSON.parse(isLogin);
+  let token = userLoggedIn.token;
+
   const response = await axios.get(
     'https://backend-skyfly-c1.vercel.app/api/v1/users?limit=5000',
     {
@@ -19,12 +21,15 @@ const fetchUsers = async () => {
       },
     },
   );
-  console.log(response);
+
   return response.data.data;
 };
 
 const deleteUser = async (id: string) => {
-  let token = getCookie('_token');
+  let isLogin: any = getCookie('isLogin') || false;
+  let userLoggedIn = JSON.parse(isLogin);
+  let token = userLoggedIn.token;
+
   const response = await axios.delete(
     `https://backend-skyfly-c1.vercel.app/api/v1/users/${id}`,
     {
@@ -49,7 +54,9 @@ const updateUser = async (e: React.ChangeEvent<any>) => {
     role: e.target.role.value,
   };
 
-  let token = getCookie('_token');
+  let isLogin: any = getCookie('isLogin') || false;
+  let userLoggedIn = JSON.parse(isLogin);
+  let token = userLoggedIn.token;
 
   const response = await axios.put(
     `https://backend-skyfly-c1.vercel.app/api/v1/users/${id}`,

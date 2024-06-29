@@ -5,22 +5,34 @@ import { getCookie } from 'typescript-cookie';
 
 // https://backend-skyfly-c1.vercel.app/api/v1/users/${id}
 const fetchAirports = async () => {
-  let token = getCookie('_token');
-  const response = await axios.get('https://backend-skyfly-c1.vercel.app/api/v1/airports', {
-    headers: {
-      Authorization: `Bearer ${token}`,
+  let isLogin: any = getCookie('isLogin') || false;
+  let userLoggedIn = JSON.parse(isLogin);
+  let token = userLoggedIn.token;
+
+  const response = await axios.get(
+    'https://backend-skyfly-c1.vercel.app/api/v1/airports',
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     },
-  });
+  );
   return response.data.data;
 };
 
 const fetchAirlines = async () => {
-  let token = getCookie('_token');
-  const response = await axios.get('https://backend-skyfly-c1.vercel.app/api/v1/airlines', {
-    headers: {
-      Authorization: `Bearer ${token}`,
+  let isLogin: any = getCookie('isLogin') || false;
+  let userLoggedIn = JSON.parse(isLogin);
+  let token = userLoggedIn.token;
+
+  const response = await axios.get(
+    'https://backend-skyfly-c1.vercel.app/api/v1/airlines',
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     },
-  });
+  );
   return response.data.data;
 };
 
@@ -57,17 +69,23 @@ const createFlight = async (
   }
 
   try {
-    let token = getCookie('_token');
-    await axios.post('https://backend-skyfly-c1.vercel.app/api/v1/flights', data, {
-      headers: {
-        Authorization: `Bearer ${token}`,
+    let isLogin: any = getCookie('isLogin') || false;
+    let userLoggedIn = JSON.parse(isLogin);
+    let token = userLoggedIn.token;
+    await axios.post(
+      'https://backend-skyfly-c1.vercel.app/api/v1/flights',
+      data,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       },
-    });
+    );
     alert('Flight created successfully');
     if (formRef.current) {
       formRef.current.reset();
     }
-    setIsFormVisible(false); 
+    setIsFormVisible(false);
   } catch (error) {
     console.error('Error creating flight:', error);
   }

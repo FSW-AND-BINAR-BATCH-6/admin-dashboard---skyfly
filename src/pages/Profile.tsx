@@ -10,7 +10,10 @@ import { LoginAtom } from '../atoms/LoginAtom';
 const Profile = () => {
   const setIsLogin = useSetAtom(LoginAtom);
 
-  let token = getCookie('_token');
+  let isLogin: any = getCookie('isLogin') || false;
+  let userLogin = JSON.parse(isLogin);
+  let token = userLogin.token;
+
   const userLoggedIn: any = jwtDecode(token || '');
 
   return (

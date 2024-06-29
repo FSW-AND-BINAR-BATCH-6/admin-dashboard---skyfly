@@ -7,7 +7,6 @@ import SignIn from './pages/Authentication/SignIn';
 import Dashboard from './pages/Dashboard';
 import Profile from './pages/Profile';
 import Settings from './pages/Settings';
-import Tables from './pages/Users';
 import TablesNotifications from './pages/Notification';
 import Flights from './pages/Flights';
 import DefaultLayout from './layout/DefaultLayout';
@@ -21,8 +20,10 @@ import TablesTransaction from './pages/Transactions';
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
   const { pathname } = useLocation();
-  let isLogin: any = getCookie('isLogin') || false;
-  console.log('isLogin: ' + isLogin);
+  let isLoginData: any = getCookie('isLogin') || false;
+  let userLoggedIn = JSON.parse(isLoginData);
+  let isLogin = userLoggedIn.isLogin || false;
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [pathname]);

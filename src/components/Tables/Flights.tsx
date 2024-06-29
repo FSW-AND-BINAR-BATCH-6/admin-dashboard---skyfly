@@ -13,7 +13,9 @@ import toast from 'react-hot-toast';
 import Loader from '../../common/Loader';
 
 const fetchFlights = async () => {
-  let token = getCookie('_token');
+  let isLogin: any = getCookie('isLogin') || false;
+  let userLoggedIn = JSON.parse(isLogin);
+  let token = userLoggedIn.token;
   const response = await axios.get(
     'https://backend-skyfly-c1.vercel.app/api/v1/flights?limit=50',
     // 'http://localhost:2000/api/v1/flights?limit=100',
@@ -27,7 +29,9 @@ const fetchFlights = async () => {
 };
 
 const fetchAirports = async () => {
-  let token = getCookie('_token');
+  let isLogin: any = getCookie('isLogin') || false;
+  let userLoggedIn = JSON.parse(isLogin);
+  let token = userLoggedIn.token;
   const response = await axios.get(
     'https://backend-skyfly-c1.vercel.app/api/v1/airports',
     // 'http://localhost:2000/api/v1/airports',
@@ -68,7 +72,9 @@ const updateFlights = async (e: React.ChangeEvent<any>) => {
   }
 
   try {
-    let token = getCookie('_token');
+    let isLogin: any = getCookie('isLogin') || false;
+    let userLoggedIn = JSON.parse(isLogin);
+    let token = userLoggedIn.token;
     await axios.put(
       `https://backend-skyfly-c1.vercel.app/api/v1/flights/${id}`,
       data,
@@ -85,7 +91,9 @@ const updateFlights = async (e: React.ChangeEvent<any>) => {
 };
 
 const deleteFlights = async (id: string) => {
-  let token = getCookie('_token');
+  let isLogin: any = getCookie('isLogin') || false;
+  let userLoggedIn = JSON.parse(isLogin);
+  let token = userLoggedIn.token;
   const response = await axios.delete(
     `https://backend-skyfly-c1.vercel.app/api/v1/flights/${id}`,
     // `http://localhost:2000/api/v1/flights/${id}`,
