@@ -181,13 +181,13 @@ const TableTransactions = () => {
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                     <p
                       className={`inline-flex rounded-full bg-opacity-10 py-1 px-3 text-sm font-medium ${
-                        transaction?.status == 'booked'
+                        transaction?.status === 'settlement'
                           ? 'bg-success text-success'
-                          : transaction?.status == 'pending'
+                          : transaction?.status === 'pending'
                           ? 'bg-warning text-warning'
-                          : transaction?.status == 'settlement'
-                          ? 'bg-sky-500 text-white'
-                          : 'bg-danger text-danger'
+                          : transaction?.status === 'expire'
+                          ? 'bg-danger text-danger'
+                          : 'bg-sky-500 text-white'
                       }`}
                     >
                       {transaction?.status}
@@ -505,7 +505,7 @@ const TableTransactions = () => {
                                     {transaction.status}
                                   </option>
                                   <option value="pending">Pending</option>
-                                  <option value="booked">Booked</option>
+                                  <option value="cancel">Cancel</option>
                                   <option value="settlement">Settlement</option>
                                   <option value="expire">Expire</option>
                                 </select>
