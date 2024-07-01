@@ -14,6 +14,7 @@ import { getCookie } from 'typescript-cookie';
 import { Transaction } from '../../types/transaction';
 import toast from 'react-hot-toast';
 import Loader from '../../common/Loader';
+import { useNavigate } from 'react-router-dom';
 
 const fetchTransactions = async () => {
   let isLogin: any = getCookie('isLogin') || false;
@@ -30,7 +31,7 @@ const fetchTransactions = async () => {
   return response.data.data;
 };
 
-const deleteTransaction = async (id: string) => {
+const deleteTransaction = async (id: string, navigate: any) => {
   let isLogin: any = getCookie('isLogin') || false;
   let userLoggedIn = JSON.parse(isLogin);
   let token = userLoggedIn.token;
@@ -42,11 +43,12 @@ const deleteTransaction = async (id: string) => {
       },
     },
   );
-  alert(response.data.message);
+  toast.success('Transaction deleted successfully');
+  navigate(0);
   return response.data.data;
 };
 
-const updateTransaction = async (e: React.ChangeEvent<any>) => {
+const updateTransaction = async (e: React.ChangeEvent<any>, navigate: any) => {
   e.preventDefault();
 
   let id = e.target.id.value;
@@ -75,7 +77,8 @@ const updateTransaction = async (e: React.ChangeEvent<any>) => {
     .request(config)
     .then((response) => {
       console.log(response.data);
-      alert(response.data.message);
+      toast.success('Notification updated successfully');
+      navigate(0);
     })
     .catch((error) => {
       console.log(error);
@@ -86,6 +89,7 @@ const updateTransaction = async (e: React.ChangeEvent<any>) => {
 const TableTransactions = () => {
   const [transactions, setTransactions] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState<Boolean>(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -117,6 +121,7 @@ const TableTransactions = () => {
       await deleteTransaction(id);
       const updatedTransaction = await fetchTransactions();
       setTransactions(updatedTransaction);
+      navigate(0);
       const modal = document.getElementById(
         `delete_modal-${id}`,
       ) as HTMLDialogElement;
