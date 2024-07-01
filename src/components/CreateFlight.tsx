@@ -84,7 +84,7 @@ const createFlight = async (
         },
       },
     );
-    toast.success('Airline created successfully');
+    toast.success('Flight created successfully');
     navigate(0);
     if (formRef.current) {
       formRef.current.reset();
