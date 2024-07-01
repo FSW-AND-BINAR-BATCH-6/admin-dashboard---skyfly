@@ -7,6 +7,7 @@ import React, { useEffect, useState } from 'react';
 import { getCookie } from 'typescript-cookie';
 import toast from 'react-hot-toast';
 import Loader from '../../common/Loader';
+import { useNavigate } from 'react-router-dom';
 
 const fetchUsers = async () => {
   let isLogin: any = getCookie('isLogin') || false;
@@ -25,7 +26,7 @@ const fetchUsers = async () => {
   return response.data.data;
 };
 
-const deleteUser = async (id: string) => {
+const deleteUser = async (id: string, navigate: any) => {
   let isLogin: any = getCookie('isLogin') || false;
   let userLoggedIn = JSON.parse(isLogin);
   let token = userLoggedIn.token;
@@ -38,11 +39,12 @@ const deleteUser = async (id: string) => {
       },
     },
   );
-
+  toast.success('User deleted successfully');
+  navigate(0);
   return response.data.data;
 };
 
-const updateUser = async (e: React.ChangeEvent<any>) => {
+const updateUser = async (e: React.ChangeEvent<any>, navigate: any) => {
   e.preventDefault();
   let id = e.target.id.value;
   let data = {
@@ -67,13 +69,15 @@ const updateUser = async (e: React.ChangeEvent<any>) => {
       },
     },
   );
-
+  toast.success('User updated successfully');
+  navigate(0);
   return response.data.data;
 };
 
 const TableUsers = () => {
   const [users, setUsers] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState<Boolean>(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -243,7 +247,7 @@ const TableUsers = () => {
                               <button
                                 className="btn btn-error"
                                 onClick={() => {
-                                  deleteUser(user.id);
+                                  deleteUser(user.id, navigate);
                                 }}
                               >
                                 Yes, Delete it
@@ -274,7 +278,13 @@ const TableUsers = () => {
                             <h3 className="font-bold text-lg">Update</h3>
                             <div className="py-4">
                               {/* form edit */}
-                              <form onSubmit={updateUser}>
+                              <form
+                                onSubmit={(
+                                  e: React.ChangeEvent<HTMLFormElement>,
+                                ) => {
+                                  updateUser(e, navigate);
+                                }}
+                              >
                                 <input
                                   type="hidden"
                                   name="id"

@@ -6,7 +6,6 @@ import PageTitle from './components/PageTitle';
 import SignIn from './pages/Authentication/SignIn';
 import Dashboard from './pages/Dashboard';
 import Profile from './pages/Profile';
-import Settings from './pages/Settings';
 import TablesNotifications from './pages/Notification';
 import Flights from './pages/Flights';
 import DefaultLayout from './layout/DefaultLayout';
@@ -138,16 +137,6 @@ function App() {
                 <>
                   <PageTitle title="Flight | SkyFly Admin" />
                   <Flights />
-                </>
-              }
-            />
-
-            <Route
-              path="/settings"
-              element={
-                <>
-                  <PageTitle title="Settings | SkyFly Admin" />
-                  <Settings />
                 </>
               }
             />

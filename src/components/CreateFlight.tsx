@@ -2,6 +2,8 @@ import axios from 'axios';
 import React, { useEffect, useRef, useState } from 'react';
 import { Airport, Flight, Plane } from '../types/flight';
 import { getCookie } from 'typescript-cookie';
+import { useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
 // https://backend-skyfly-c1.vercel.app/api/v1/users/${id}
 const fetchAirports = async () => {
@@ -40,6 +42,7 @@ const createFlight = async (
   e: React.ChangeEvent<any>,
   setIsFormVisible: React.Dispatch<React.SetStateAction<boolean>>,
   formRef: React.RefObject<HTMLFormElement>,
+  navigate: any,
 ) => {
   e.preventDefault();
 
@@ -81,7 +84,8 @@ const createFlight = async (
         },
       },
     );
-    alert('Flight created successfully');
+    toast.success('Airline created successfully');
+    navigate(0);
     if (formRef.current) {
       formRef.current.reset();
     }
@@ -96,6 +100,7 @@ const FlightsForm = () => {
   const [airlines, setAirlines] = useState<Plane[]>([]);
   const [isFormVisible, setIsFormVisible] = useState(false);
   const formRef = useRef<HTMLFormElement>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchAirports().then((data) => {
@@ -120,7 +125,9 @@ const FlightsForm = () => {
           <form
             id="flightForm"
             ref={formRef}
-            onSubmit={(e) => createFlight(e, setIsFormVisible, formRef)}
+            onSubmit={(e) =>
+              createFlight(e, setIsFormVisible, formRef, navigate)
+            }
           >
             {/* Airlines */}
             <div className="my-4">

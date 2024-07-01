@@ -9,6 +9,7 @@ import { BsBuildingsFill } from 'react-icons/bs';
 import React, { useEffect, useState } from 'react';
 import { Flight, Airport } from '../../types/flight';
 import { getCookie } from 'typescript-cookie';
+import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import Loader from '../../common/Loader';
 
@@ -44,7 +45,7 @@ const fetchAirports = async () => {
   return response.data.data;
 };
 
-const updateFlights = async (e: React.ChangeEvent<any>) => {
+const updateFlights = async (e: React.ChangeEvent<any>, navigate: any) => {
   e.preventDefault();
   const combineDateTime = (date: string, time: string) => {
     return new Date(`${date}T${time}:00`).toISOString();
@@ -84,13 +85,14 @@ const updateFlights = async (e: React.ChangeEvent<any>) => {
         },
       },
     );
-    alert('Flight updated successfully');
+    toast.success('Flight updated successfully');
+    navigate(0);
   } catch (error) {
     console.error('Error updating flight:', error);
   }
 };
 
-const deleteFlights = async (id: string) => {
+const deleteFlights = async (id: string, navigate: any) => {
   let isLogin: any = getCookie('isLogin') || false;
   let userLoggedIn = JSON.parse(isLogin);
   let token = userLoggedIn.token;
@@ -103,7 +105,8 @@ const deleteFlights = async (id: string) => {
       },
     },
   );
-
+  toast.success('Flight deleted successfully');
+  navigate(0);
   return response.data.data;
 };
 
@@ -111,6 +114,7 @@ const TableFlights = () => {
   const [flights, setFlights] = useState<Flight[]>([]);
   const [airports, setAirports] = useState<Airport[]>([]);
   const [isLoading, setIsLoading] = useState<Boolean>(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -145,7 +149,7 @@ const TableFlights = () => {
 
   const handleDelete = async (id: string) => {
     try {
-      await deleteFlights(id);
+      await deleteFlights(id, navigate);
       const updatedFlights = await fetchFlights();
       setFlights(updatedFlights);
       const modal = document.getElementById(
@@ -458,7 +462,13 @@ const TableFlights = () => {
                             <h3 className="font-bold text-lg">Update</h3>
                             <div className="py-4">
                               {/* form edit */}
-                              <form onSubmit={updateFlights}>
+                              <form
+                                onSubmit={(
+                                  e: React.ChangeEvent<HTMLFormElement>,
+                                ) => {
+                                  updateFlights(e, navigate);
+                                }}
+                              >
                                 <input
                                   type="hidden"
                                   name="id"

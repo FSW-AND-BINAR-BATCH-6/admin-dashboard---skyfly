@@ -3,6 +3,8 @@ import { BsFillPencilFill, BsFillTrash3Fill, BsEye } from 'react-icons/bs';
 import { useEffect, useState } from 'react';
 import { getCookie } from 'typescript-cookie';
 import Loader from '../../common/Loader';
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 const API_BASE_URL =
   'https://backend-skyfly-c1.vercel.app/api/v1/notifications';
@@ -33,6 +35,7 @@ const deleteNotification = async (id: string, onCompleted: Function) => {
   await axios.delete(`${API_BASE_URL}/${id}`, {
     headers: { Authorization: `Bearer ${token}` },
   });
+  toast.success('Notification deleted successfully');
   onCompleted();
 };
 
@@ -53,7 +56,7 @@ const updateNotification = async (e, onCompleted: Function) => {
   await axios.put(`${API_BASE_URL}/${id.value}`, data, {
     headers: { Authorization: `Bearer ${token}` },
   });
-
+  toast.success('Notification updated successfully');
   onCompleted();
 };
 
@@ -235,6 +238,7 @@ const TableNotifications = () => {
   const [notifications, setNotifications] = useState([]);
   const [isLoading, setIsLoading] = useState<Boolean>(true);
   const [refresh, setRefresh] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     try {
@@ -278,7 +282,10 @@ const TableNotifications = () => {
               <NotificationRow
                 key={notification.id}
                 notification={notification}
-                onRefresh={() => setRefresh(!refresh)}
+                onRefresh={() => {
+                  setRefresh(!refresh);
+                  navigate(0);
+                }}
               />
             ))}
           </tbody>

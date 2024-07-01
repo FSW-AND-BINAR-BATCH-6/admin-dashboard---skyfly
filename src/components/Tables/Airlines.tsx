@@ -1,7 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { getCookie } from 'typescript-cookie';
-import Loader1 from '../Loader';
 import Loader from '../../common/Loader';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
@@ -122,7 +121,7 @@ const updateAirline = async (e: React.ChangeEvent<any>, navigate: any) => {
     );
 
     toast.success('Airline updated successfully');
-    navigate(0); // Reload the page to reflect the changes
+    navigate(0);
 
     return response.data.data;
   } catch (error) {
