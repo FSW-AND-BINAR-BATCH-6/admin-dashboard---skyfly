@@ -8,23 +8,7 @@ import { getCookie } from 'typescript-cookie';
 import toast from 'react-hot-toast';
 import Loader from '../../common/Loader';
 import { useNavigate } from 'react-router-dom';
-
-const fetchUsers = async () => {
-  let isLogin: any = getCookie('isLogin') || false;
-  let userLoggedIn = JSON.parse(isLogin);
-  let token = userLoggedIn.token;
-
-  const response = await axios.get(
-    'https://backend-skyfly-c1.vercel.app/api/v1/users?limit=5000',
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    },
-  );
-
-  return response.data.data;
-};
+import Paginate from 'react-paginate';
 
 const deleteUser = async (id: string, navigate: any) => {
   let isLogin: any = getCookie('isLogin') || false;
@@ -75,34 +59,57 @@ const updateUser = async (e: React.ChangeEvent<any>, navigate: any) => {
 };
 
 const TableUsers = () => {
-  const [users, setUsers] = useState<any[]>([]);
-  const [isLoading, setIsLoading] = useState<Boolean>(true);
   const navigate = useNavigate();
 
+  const [users, setUsers] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState<Boolean>(true);
+  const [page, setPage] = useState<number>(0);
+  const [pages, setPages] = useState<number>(0);
+  const [limit, setLimit] = useState<number>(10);
+  const [rows, setRows] = useState<number>(0);
+
+  const changePage = ({ selected }) => {
+    setPage(selected + 1);
+  };
+
+  const fetchData = async () => {
+    try {
+      let isLogin: any = getCookie('isLogin') || false;
+      let userLoggedIn = JSON.parse(isLogin);
+      let token = userLoggedIn.token;
+
+      const usersData = await axios.get(
+        `https://backend-skyfly-c1.vercel.app/api/v1/users?limit=${limit}&page=${page}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+
+      setRows(usersData.data.totalItems);
+      setPage(usersData.data.pagination.currentPage);
+      setPages(usersData.data.pagination.totalPage);
+      setUsers(usersData.data.data);
+    } catch (error) {
+      toast.error('Fetching Data is Failed!', {
+        style: {
+          backgroundColor: 'red',
+          color: 'white',
+        },
+        iconTheme: {
+          primary: 'white',
+          secondary: 'red',
+        },
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const usersData = await fetchUsers();
-
-        setUsers(usersData);
-      } catch (error) {
-        toast.error('Fetching Data is Failed!', {
-          style: {
-            backgroundColor: 'red',
-            color: 'white',
-          },
-          iconTheme: {
-            primary: 'white',
-            secondary: 'red',
-          },
-        });
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
     fetchData();
-  }, []);
+  }, [page]);
 
   if (isLoading) {
     return <Loader />;
@@ -443,6 +450,27 @@ const TableUsers = () => {
               ))}
             </tbody>
           </table>
+          <p className="mt-3">
+            Total Data: {rows} Page: {rows ? page : 0} of {pages}
+          </p>
+          <nav
+            className="pagination is-centered"
+            role="navigation"
+            aria-label="pagination"
+          >
+            <Paginate
+              previousLabel={'< Prev'}
+              nextLabel={'Next >'}
+              pageCount={pages}
+              onPageChange={changePage}
+              containerClassName="join"
+              pageLinkClassName="join-item btn mx-1"
+              activeClassName="btn btn-active"
+              previousLinkClassName="btn"
+              nextLinkClassName="btn"
+              disabledLinkClassName="btn btn-disabled"
+            />
+          </nav>
         </div>
       </div>
     </>

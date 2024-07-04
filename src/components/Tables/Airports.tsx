@@ -11,26 +11,7 @@ import {
   BsEye,
   BsPlus,
 } from 'react-icons/bs';
-
-const fetchAirports = async () => {
-  try {
-    let isLogin: any = getCookie('isLogin') || false;
-    let userLoggedIn = JSON.parse(isLogin);
-    let token = userLoggedIn.token;
-    const response = await axios.get(
-      'https://backend-skyfly-c1.vercel.app/api/v1/airports?limit=5000',
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      },
-    );
-    return response.data.data;
-  } catch (error) {
-    console.error('Fetch Airports Error:', error);
-    throw new Error('Failed to fetch airports');
-  }
-};
+import Paginate from 'react-paginate';
 
 const deleteAirport = async (id: string, navigate: any) => {
   try {
@@ -138,22 +119,44 @@ const TableAirports = () => {
   const [airports, setAirports] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
+  const [page, setPage] = useState<number>(0);
+  const [pages, setPages] = useState<number>(0);
+  const [limit, setLimit] = useState<number>(10);
+  const [rows, setRows] = useState<number>(0);
+
+  const changePage = ({ selected }) => {
+    setPage(selected + 1);
+  };
+
+  const fetchData = async () => {
+    try {
+      let isLogin: any = getCookie('isLogin') || false;
+      let userLoggedIn = JSON.parse(isLogin);
+      let token = userLoggedIn.token;
+      const response = await axios.get(
+        `https://backend-skyfly-c1.vercel.app/api/v1/airports?limit=${limit}&page=${page}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+
+      setAirports(response.data.data);
+      setRows(response.data.totalItems);
+      setPage(response.data.pagination.currentPage);
+      setPages(response.data.pagination.totalPage);
+    } catch (error) {
+      console.error('Fetch Data Error:', error);
+      toast.error('Failed to fetch airports data');
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const airportsData = await fetchAirports();
-        setAirports(airportsData);
-      } catch (error) {
-        console.error('Fetch Data Error:', error);
-        toast.error('Failed to fetch airports data');
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
     fetchData();
-  }, []);
+  }, [page]);
 
   if (isLoading) {
     return <Loader />;
@@ -462,6 +465,27 @@ const TableAirports = () => {
               ))}
             </tbody>
           </table>
+          <p className="mt-3">
+            Total Data: {rows} Page: {rows ? page : 0} of {pages}
+          </p>
+          <nav
+            className="pagination is-centered"
+            role="navigation"
+            aria-label="pagination"
+          >
+            <Paginate
+              previousLabel={'< Prev'}
+              nextLabel={'Next >'}
+              pageCount={pages}
+              onPageChange={changePage}
+              containerClassName="join"
+              pageLinkClassName="join-item btn mx-1"
+              activeClassName="btn btn-active"
+              previousLinkClassName="btn"
+              nextLinkClassName="btn"
+              disabledLinkClassName="btn btn-disabled"
+            />
+          </nav>
         </div>
       </div>
 

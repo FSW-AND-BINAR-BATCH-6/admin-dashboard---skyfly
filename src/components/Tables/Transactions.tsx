@@ -15,21 +15,7 @@ import { Transaction } from '../../types/transaction';
 import toast from 'react-hot-toast';
 import Loader from '../../common/Loader';
 import { useNavigate } from 'react-router-dom';
-
-const fetchTransactions = async () => {
-  let isLogin: any = getCookie('isLogin') || false;
-  let userLoggedIn = JSON.parse(isLogin);
-  let token = userLoggedIn.token;
-  const response = await axios.get(
-    `https://backend-skyfly-c1.vercel.app/api/v1/transactions/admin/admin/admin`,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    },
-  );
-  return response.data.data;
-};
+import Paginate from 'react-paginate';
 
 const deleteTransaction = async (id: string, navigate: any) => {
   let isLogin: any = getCookie('isLogin') || false;
@@ -91,30 +77,52 @@ const TableTransactions = () => {
   const [isLoading, setIsLoading] = useState<Boolean>(true);
   const navigate = useNavigate();
 
+  const [page, setPage] = useState<number>(0);
+  const [pages, setPages] = useState<number>(0);
+  const [limit, setLimit] = useState<number>(10);
+  const [rows, setRows] = useState<number>(0);
+
+  const changePage = ({ selected }) => {
+    setPage(selected + 1);
+  };
+
+  const fetchData = async () => {
+    try {
+      let isLogin: any = getCookie('isLogin') || false;
+      let userLoggedIn = JSON.parse(isLogin);
+      let token = userLoggedIn.token;
+      const response = await axios.get(
+        `https://backend-skyfly-c1.vercel.app/api/v1/transactions/admin/admin/admin?limit=${limit}&page=${page}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+
+      setTransactions(response.data.data);
+      setRows(response.data.totalItems);
+      setPage(response.data.pagination.currentPage);
+      setPages(response.data.pagination.totalPage);
+    } catch (error) {
+      toast.error('Fetching Data is Failed!', {
+        style: {
+          backgroundColor: 'red',
+          color: 'white',
+        },
+        iconTheme: {
+          primary: 'white',
+          secondary: 'red',
+        },
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const transactionData = await fetchTransactions();
-
-        setTransactions(transactionData);
-      } catch (error) {
-        toast.error('Fetching Data is Failed!', {
-          style: {
-            backgroundColor: 'red',
-            color: 'white',
-          },
-          iconTheme: {
-            primary: 'white',
-            secondary: 'red',
-          },
-        });
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
     fetchData();
-  }, []);
+  }, [page]);
 
   const handleDelete = async (id: string) => {
     try {
@@ -531,6 +539,27 @@ const TableTransactions = () => {
               ))}
             </tbody>
           </table>
+          <p className="mt-3">
+            Total Data: {rows} Page: {rows ? page : 0} of {pages}
+          </p>
+          <nav
+            className="pagination is-centered"
+            role="navigation"
+            aria-label="pagination"
+          >
+            <Paginate
+              previousLabel={'< Prev'}
+              nextLabel={'Next >'}
+              pageCount={pages}
+              onPageChange={changePage}
+              containerClassName="join"
+              pageLinkClassName="join-item btn mx-1"
+              activeClassName="btn btn-active"
+              previousLinkClassName="btn"
+              nextLinkClassName="btn"
+              disabledLinkClassName="btn btn-disabled"
+            />
+          </nav>
         </div>
       </div>
     </>

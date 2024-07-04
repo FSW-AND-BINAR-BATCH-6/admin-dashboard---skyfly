@@ -5,28 +5,10 @@ import { getCookie } from 'typescript-cookie';
 import Loader from '../../common/Loader';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import Paginate from 'react-paginate';
 
 const API_BASE_URL =
   'https://backend-skyfly-c1.vercel.app/api/v1/notifications';
-
-const fetchNotifications = async () => {
-  let isLogin: any = getCookie('isLogin') || false;
-  let userLoggedIn = JSON.parse(isLogin);
-  let token = userLoggedIn.token;
-  try {
-    const response = await axios.get(`${API_BASE_URL}?limit=20&sort=asc`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-
-    const sortedData = response.data.data.sort((a: any, b: any) => {
-      return new Date(a.date) - new Date(b.date);
-    });
-    return sortedData;
-  } catch (error) {
-    console.error('Error fetching notifications:', error);
-    return [];
-  }
-};
 
 const deleteNotification = async (id: string, onCompleted: Function) => {
   let isLogin: any = getCookie('isLogin') || false;
@@ -240,15 +222,45 @@ const TableNotifications = () => {
   const [refresh, setRefresh] = useState(false);
   const navigate = useNavigate();
 
-  useEffect(() => {
+  const [page, setPage] = useState<number>(0);
+  const [pages, setPages] = useState<number>(0);
+  const [limit, setLimit] = useState<number>(2);
+  const [rows, setRows] = useState<number>(0);
+
+  const changePage = ({ selected }) => {
+    setPage(selected + 1);
+  };
+
+  const fetchData = async () => {
+    let isLogin: any = getCookie('isLogin') || false;
+    let userLoggedIn = JSON.parse(isLogin);
+    let token = userLoggedIn.token;
     try {
-      fetchNotifications().then(setNotifications);
-    } catch (e) {
-      console.log('Failed Fetch');
+      const response = await axios.get(
+        `${API_BASE_URL}?limit=${limit}&page=${page}&sort=asc`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        },
+      );
+
+      const sortedData = response.data.data.sort((a: any, b: any) => {
+        return new Date(a.date) - new Date(b.date);
+      });
+      setNotifications(sortedData);
+      setRows(response.data.totalItems);
+      setPage(response.data.pagination.currentPage);
+      setPages(response.data.pagination.totalPage);
+    } catch (error) {
+      console.error('Error fetching notifications:', error);
+      return [];
     } finally {
       setIsLoading(false);
     }
-  }, [refresh]);
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, [refresh, page]);
 
   if (isLoading) {
     return <Loader />;
@@ -290,6 +302,27 @@ const TableNotifications = () => {
             ))}
           </tbody>
         </table>
+        <p className="mt-3">
+          Total Data: {rows} Page: {rows ? page : 0} of {pages}
+        </p>
+        <nav
+          className="pagination is-centered"
+          role="navigation"
+          aria-label="pagination"
+        >
+          <Paginate
+            previousLabel={'< Prev'}
+            nextLabel={'Next >'}
+            pageCount={pages}
+            onPageChange={changePage}
+            containerClassName="join"
+            pageLinkClassName="join-item btn mx-1"
+            activeClassName="btn btn-active"
+            previousLinkClassName="btn"
+            nextLinkClassName="btn"
+            disabledLinkClassName="btn btn-disabled"
+          />
+        </nav>
       </div>
     </div>
   );

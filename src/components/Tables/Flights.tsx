@@ -12,38 +12,7 @@ import { getCookie } from 'typescript-cookie';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import Loader from '../../common/Loader';
-
-const fetchFlights = async () => {
-  let isLogin: any = getCookie('isLogin') || false;
-  let userLoggedIn = JSON.parse(isLogin);
-  let token = userLoggedIn.token;
-  const response = await axios.get(
-    'https://backend-skyfly-c1.vercel.app/api/v1/flights?limit=50',
-    // 'http://localhost:2000/api/v1/flights?limit=100',
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    },
-  );
-  return response.data.data;
-};
-
-const fetchAirports = async () => {
-  let isLogin: any = getCookie('isLogin') || false;
-  let userLoggedIn = JSON.parse(isLogin);
-  let token = userLoggedIn.token;
-  const response = await axios.get(
-    'https://backend-skyfly-c1.vercel.app/api/v1/airports',
-    // 'http://localhost:2000/api/v1/airports',
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    },
-  );
-  return response.data.data;
-};
+import Paginate from 'react-paginate';
 
 const updateFlights = async (e: React.ChangeEvent<any>, navigate: any) => {
   e.preventDefault();
@@ -98,7 +67,6 @@ const deleteFlights = async (id: string, navigate: any) => {
   let token = userLoggedIn.token;
   const response = await axios.delete(
     `https://backend-skyfly-c1.vercel.app/api/v1/flights/${id}`,
-    // `http://localhost:2000/api/v1/flights/${id}`,
     {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -115,33 +83,63 @@ const TableFlights = () => {
   const [airports, setAirports] = useState<Airport[]>([]);
   const [isLoading, setIsLoading] = useState<Boolean>(true);
   const navigate = useNavigate();
+  const [page, setPage] = useState<number>(0);
+  const [pages, setPages] = useState<number>(0);
+  const [limit, setLimit] = useState<Number>(10);
+  const [rows, setRows] = useState<number>(0);
+
+  const changePage = ({ selected }) => {
+    setPage(selected + 1);
+  };
+
+  const fetchData = async () => {
+    try {
+      let isLogin: any = getCookie('isLogin') || false;
+      let userLoggedIn = JSON.parse(isLogin);
+      let token = userLoggedIn.token;
+      const response = await axios.get(
+        `https://backend-skyfly-c1.vercel.app/api/v1/flights?limit=${limit}&page=${page}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+
+      const airportData = await axios.get(
+        'https://backend-skyfly-c1.vercel.app/api/v1/airports',
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+
+      setFlights(response.data.data);
+      setRows(response.data.totalItems);
+      setPage(response.data.pagination.currentPage);
+      setPages(response.data.pagination.totalPages);
+      setAirports(airportData.data.data);
+    } catch (error) {
+      toast.error('Fetching Data is Failed!', {
+        style: {
+          backgroundColor: 'red',
+          color: 'white',
+        },
+        iconTheme: {
+          primary: 'white',
+          secondary: 'red',
+        },
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  console.log(pages);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const flightData = await fetchFlights();
-        const airportData = await await fetchAirports();
-
-        setFlights(flightData);
-        setAirports(airportData);
-      } catch (error) {
-        toast.error('Fetching Data is Failed!', {
-          style: {
-            backgroundColor: 'red',
-            color: 'white',
-          },
-          iconTheme: {
-            primary: 'white',
-            secondary: 'red',
-          },
-        });
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
     fetchData();
-  }, []);
+  }, [page]);
 
   const formatPrice = (price: number) => {
     return `Rp ${price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`;
@@ -150,8 +148,23 @@ const TableFlights = () => {
   const handleDelete = async (id: string) => {
     try {
       await deleteFlights(id, navigate);
-      const updatedFlights = await fetchFlights();
-      setFlights(updatedFlights);
+
+      let isLogin: any = getCookie('isLogin') || false;
+      let userLoggedIn = JSON.parse(isLogin);
+      let token = userLoggedIn.token;
+      const response = await axios.get(
+        `https://backend-skyfly-c1.vercel.app/api/v1/flights?limit=${limit}&page=${page}}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+
+      setFlights(response.data.data);
+      setRows(response.data.totalItems);
+      setPage(response.data.pagination.currentPage);
+      setPages(response.data.pagination.totalPage);
       const modal = document.getElementById(
         `delete_modal-${id}`,
       ) as HTMLDialogElement;
@@ -713,6 +726,27 @@ const TableFlights = () => {
               ))}
             </tbody>
           </table>
+          <p className="mt-3">
+            Total Data: {rows} Page: {rows ? page : 0} of {pages}
+          </p>
+          <nav
+            className="pagination is-centered"
+            role="navigation"
+            aria-label="pagination"
+          >
+            <Paginate
+              previousLabel={'< Prev'}
+              nextLabel={'Next >'}
+              pageCount={pages}
+              onPageChange={changePage}
+              containerClassName="join"
+              pageLinkClassName="join-item btn mx-1"
+              activeClassName="btn btn-active"
+              previousLinkClassName="btn"
+              nextLinkClassName="btn"
+              disabledLinkClassName="btn btn-disabled"
+            />
+          </nav>
         </div>
       </div>
     </>

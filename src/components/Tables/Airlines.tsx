@@ -10,26 +10,7 @@ import {
   BsEye,
   BsPlus,
 } from 'react-icons/bs';
-
-const fetchAirlines = async () => {
-  try {
-    let isLogin: any = getCookie('isLogin') || false;
-    let userLoggedIn = JSON.parse(isLogin);
-    let token = userLoggedIn.token;
-    const response = await axios.get(
-      'https://backend-skyfly-c1.vercel.app/api/v1/airlines?limit=5000',
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      },
-    );
-    return response.data.data;
-  } catch (error) {
-    console.error('Fetch Airlines Error:', error);
-    throw new Error('Failed to fetch airlines');
-  }
-};
+import Paginate from 'react-paginate';
 
 const deleteAirline = async (id: string, navigate: any) => {
   try {
@@ -134,23 +115,47 @@ const updateAirline = async (e: React.ChangeEvent<any>, navigate: any) => {
 const TableAirlines = () => {
   const [airlines, setAirlines] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [page, setPage] = useState<number>(0);
+  const [pages, setPages] = useState<number>(0);
+  const [limit, setLimit] = useState<number>(10);
+  const [rows, setRows] = useState<number>(0);
+
   const navigate = useNavigate();
+  const changePage = ({ selected }) => {
+    setPage(selected + 1);
+  };
+
+  const fetchData = async () => {
+    try {
+      let isLogin: any = getCookie('isLogin') || false;
+      let userLoggedIn = JSON.parse(isLogin);
+      let token = userLoggedIn.token;
+      const response = await axios.get(
+        `https://backend-skyfly-c1.vercel.app/api/v1/airlines?limit=${limit}&page=${page}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+
+      console.log(response.data);
+
+      setAirlines(response.data.data);
+      setRows(response.data.totalItems);
+      setPage(response.data.pagination.currentPage);
+      setPages(response.data.pagination.totalPage);
+    } catch (error) {
+      console.error('Fetch Data Error:', error);
+      toast.error('Failed to fetch airlines data');
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const airlinesData = await fetchAirlines();
-        setAirlines(airlinesData);
-      } catch (error) {
-        console.error('Fetch Data Error:', error);
-        toast.error('Failed to fetch airlines data');
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
     fetchData();
-  }, []);
+  }, [page]);
 
   if (isLoading) {
     return <Loader />;
@@ -411,6 +416,27 @@ const TableAirlines = () => {
               ))}
             </tbody>
           </table>
+          <p className="mt-3">
+            Total Data: {rows} Page: {rows ? page : 0} of {pages}
+          </p>
+          <nav
+            className="pagination is-centered"
+            role="navigation"
+            aria-label="pagination"
+          >
+            <Paginate
+              previousLabel={'< Prev'}
+              nextLabel={'Next >'}
+              pageCount={pages}
+              onPageChange={changePage}
+              containerClassName="join"
+              pageLinkClassName="join-item btn mx-1"
+              activeClassName="btn btn-active"
+              previousLinkClassName="btn"
+              nextLinkClassName="btn"
+              disabledLinkClassName="btn btn-disabled"
+            />
+          </nav>
         </div>
       </div>
 
