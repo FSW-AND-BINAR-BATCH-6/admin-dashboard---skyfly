@@ -87,9 +87,11 @@ const TableUsers = () => {
         },
       );
 
+      console.log(usersData.data);
+
       setRows(usersData.data.totalItems);
       setPage(usersData.data.pagination.currentPage);
-      setPages(usersData.data.pagination.totalPage);
+      setPages(usersData.data.pagination.totalPages);
       setUsers(usersData.data.data);
     } catch (error) {
       toast.error('Fetching Data is Failed!', {
