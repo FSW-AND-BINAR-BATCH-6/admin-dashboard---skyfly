@@ -426,7 +426,7 @@ const TableTransactions = () => {
                                 <input
                                   type="hidden"
                                   name="id"
-                                  defaultValue={transaction.id}
+                                  value={transaction.id}
                                 />
                                 {/* orderId */}
                                 <label className="input input-bordered flex items-center gap-2 my-2 bg-white dark:bg-boxdark">
@@ -436,7 +436,7 @@ const TableTransactions = () => {
                                     className="grow"
                                     placeholder="Order ID"
                                     name="orderId"
-                                    defaultValue={transaction.orderId}
+                                    value={transaction.orderId}
                                     readOnly
                                   />
                                 </label>
@@ -448,7 +448,7 @@ const TableTransactions = () => {
                                     className="grow"
                                     placeholder="Total Price"
                                     name="totalPrice"
-                                    defaultValue={transaction.totalPrice}
+                                    value={transaction.totalPrice}
                                   />
                                 </label>
                                 {/* tax */}
@@ -459,7 +459,7 @@ const TableTransactions = () => {
                                     className="grow"
                                     name="tax"
                                     placeholder="Tax"
-                                    defaultValue={transaction.tax}
+                                    value={transaction.tax}
                                   />
                                 </label>
                                 {/* bookingDate */}
@@ -470,7 +470,7 @@ const TableTransactions = () => {
                                     className="grow"
                                     placeholder="Booking Date"
                                     name="bookingDate"
-                                    defaultValue={transaction.bookingDate}
+                                    value={transaction.bookingDate}
                                     readOnly
                                   />
                                 </label>
@@ -482,7 +482,7 @@ const TableTransactions = () => {
                                     className="grow"
                                     placeholder="Booking Code"
                                     name="bookingCode"
-                                    defaultValue={transaction.bookingCode}
+                                    value={transaction.bookingCode}
                                     readOnly
                                   />
                                 </label>
@@ -493,7 +493,7 @@ const TableTransactions = () => {
                                   <input
                                     type="text"
                                     className="grow"
-                                    defaultValue={transaction.userId}
+                                    value={transaction.userId}
                                     name="userId"
                                     placeholder="User ID"
                                     readOnly
@@ -505,7 +505,7 @@ const TableTransactions = () => {
                                   name="status"
                                 >
                                   <option
-                                    defaultValue={transaction?.status}
+                                    value={transaction?.status}
                                     selected
                                     hidden
                                   >
@@ -519,7 +519,7 @@ const TableTransactions = () => {
 
                                 <input
                                   type="submit"
-                                  defaultValue="Update"
+                                  value="Update"
                                   className="btn bg-white dark:bg-black w-full my-3 text-orange-400"
                                 />
                               </form>

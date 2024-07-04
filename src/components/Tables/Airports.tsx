@@ -354,7 +354,7 @@ const TableAirports = () => {
                                 <input
                                   type="hidden"
                                   name="id"
-                                  defaultValue={airport.id}
+                                  value={airport.id}
                                 />
                                 <div className="mb-4">
                                   <label
@@ -366,7 +366,7 @@ const TableAirports = () => {
                                   <input
                                     type="text"
                                     name="code"
-                                    defaultValue={airport.code}
+                                    value={airport.code}
                                     className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                                   />
                                 </div>
@@ -380,7 +380,7 @@ const TableAirports = () => {
                                   <input
                                     type="text"
                                     name="name"
-                                    defaultValue={airport.name}
+                                    value={airport.name}
                                     className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                                   />
                                 </div>
@@ -394,7 +394,7 @@ const TableAirports = () => {
                                   <input
                                     type="text"
                                     name="country"
-                                    defaultValue={airport.country}
+                                    value={airport.country}
                                     className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                                   />
                                 </div>
@@ -408,7 +408,7 @@ const TableAirports = () => {
                                   <input
                                     type="text"
                                     name="city"
-                                    defaultValue={airport.city}
+                                    value={airport.city}
                                     className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                                   />
                                 </div>
@@ -422,7 +422,7 @@ const TableAirports = () => {
                                   <input
                                     type="text"
                                     name="continent"
-                                    defaultValue={airport.continent}
+                                    value={airport.continent}
                                     className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                                   />
                                 </div>

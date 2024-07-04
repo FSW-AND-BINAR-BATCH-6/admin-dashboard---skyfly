@@ -167,21 +167,17 @@ const EditModal = ({ notification, onUpdate }) => (
       <h3 className="font-bold text-lg">Update</h3>
       <div className="py-4">
         <form onSubmit={onUpdate}>
-          <input type="hidden" name="id" defaultValue={notification.id} />
-          <FormField name="type" defaultValue={notification.type} />
+          <input type="hidden" name="id" value={notification.id} />
+          <FormField name="type" value={notification.type} />
           <FormField
             name="notificationsTitle"
-            defaultValue={notification.notificationsTitle}
+            value={notification.notificationsTitle}
           />
           <FormField
             name="notificationsContent"
-            defaultValue={notification.notificationsContent}
+            value={notification.notificationsContent}
           />
-          <FormField
-            name="date"
-            defaultValue={notification.date}
-            readOnly={true}
-          />
+          <FormField name="date" value={notification.date} readOnly={true} />
           <input
             type="submit"
             value="Update"
@@ -203,14 +199,14 @@ const EditModal = ({ notification, onUpdate }) => (
   </dialog>
 );
 
-const FormField = ({ name, defaultValue, readOnly }) => (
+const FormField = ({ name, value, readOnly }) => (
   <label className="input input-bordered flex items-center gap-2 my-2 bg-white dark:bg-boxdark">
     <input
       type="text"
       className="grow"
       placeholder={name}
       name={name}
-      defaultValue={defaultValue}
+      value={value}
       readOnly={readOnly}
     />
   </label>

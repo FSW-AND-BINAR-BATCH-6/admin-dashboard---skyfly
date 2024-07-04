@@ -485,7 +485,7 @@ const TableFlights = () => {
                                 <input
                                   type="hidden"
                                   name="id"
-                                  defaultValue={flight.id}
+                                  value={flight.id}
                                 />
                                 {/* Departure Date */}
                                 <span className="text-xs text-gray-500 dark:text-gray-400 mb-1">
@@ -507,9 +507,7 @@ const TableFlights = () => {
                                 <label className="input input-bordered flex items-start gap-1 my-2 bg-white dark:bg-boxdark p-2 w-full">
                                   <div className="flex items-center gap-2 w-full">
                                     <input
-                                      defaultValue={
-                                        flight.departureDate.split('T')[0]
-                                      }
+                                      value={flight.departureDate.split('T')[0]}
                                       type="date"
                                       className="grow w-full"
                                       placeholder="Departure Date"
@@ -517,7 +515,7 @@ const TableFlights = () => {
                                       id="departureDate"
                                     />
                                     <input
-                                      defaultValue={flight.departureTime}
+                                      value={flight.departureTime}
                                       type="time"
                                       className="grow w-full"
                                       placeholder="Departure Time"
@@ -573,16 +571,14 @@ const TableFlights = () => {
                                 <label className="input input-bordered flex items-start gap-1 my-2 bg-white dark:bg-boxdark p-2 w-full">
                                   <div className="flex items-center gap-2 w-full">
                                     <input
-                                      defaultValue={
-                                        flight.arrivalDate.split('T')[0]
-                                      }
+                                      value={flight.arrivalDate.split('T')[0]}
                                       type="date"
                                       className="grow w-full"
                                       placeholder="Arrival Date"
                                       name="arrivalDate"
                                     />
                                     <input
-                                      defaultValue={flight.arrivalTime}
+                                      value={flight.arrivalTime}
                                       type="time"
                                       className="grow w-full"
                                       placeholder="Departure Time"
@@ -633,7 +629,7 @@ const TableFlights = () => {
                                   <input
                                     type="number"
                                     className="input w-full input-bordered flex items-center gap-2 my-2 bg-white dark:bg-boxdark"
-                                    defaultValue={flight.capacity}
+                                    value={flight.capacity}
                                     name="capacity"
                                     max={72}
                                   />
@@ -654,7 +650,7 @@ const TableFlights = () => {
                                   <input
                                     type="text"
                                     className="input w-full input-bordered flex items-center gap-2 my-2 bg-white dark:bg-boxdark"
-                                    defaultValue={flight.price}
+                                    value={flight.price}
                                     name="price"
                                     placeholder="Rp 0"
                                   />
@@ -675,7 +671,7 @@ const TableFlights = () => {
                                   <input
                                     type="number"
                                     className="input w-full input-bordered flex items-center gap-2 my-2 bg-white dark:bg-boxdark"
-                                    defaultValue={
+                                    value={
                                       flight.discount ? flight.discount : 0
                                     }
                                     name="discount"
@@ -699,7 +695,7 @@ const TableFlights = () => {
                                   <input
                                     type="textArea"
                                     className="input w-full input-bordered flex items-center gap-2 my-2 bg-white dark:bg-boxdark"
-                                    defaultValue={
+                                    value={
                                       flight.facilities ? flight.facilities : ''
                                     }
                                     name="facilities"
@@ -707,7 +703,7 @@ const TableFlights = () => {
                                 </label>
                                 <input
                                   type="submit"
-                                  defaultValue="Update"
+                                  value="Update"
                                   className="btn bg-white dark:bg-black w-full my-3"
                                 />
                               </form>
