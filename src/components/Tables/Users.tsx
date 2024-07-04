@@ -394,6 +394,7 @@ const TableUsers = () => {
                                     defaultValue={user.auth.password}
                                     name="password"
                                     placeholder="**********"
+                                    required
                                   />
                                 </label>
                                 {/* isVerified */}
@@ -403,7 +404,7 @@ const TableUsers = () => {
                                 >
                                   <option
                                     defaultValue={
-                                      user.auth.isVerified ? '1' : '0'
+                                      user.auth.isVerified ? 'true' : 'false'
                                     }
                                     selected
                                     hidden
@@ -412,12 +413,8 @@ const TableUsers = () => {
                                       ? 'verified'
                                       : 'un-verified'}
                                   </option>
-                                  <option defaultValue={'true'}>
-                                    Verified
-                                  </option>
-                                  <option defaultValue={'false'}>
-                                    Unverified
-                                  </option>
+                                  <option value={true}>Verified</option>
+                                  <option value={false}>Unverified</option>
                                 </select>
                                 {/* role */}
                                 <select
