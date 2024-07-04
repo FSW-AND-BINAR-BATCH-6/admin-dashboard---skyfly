@@ -297,7 +297,7 @@ const TableUsers = () => {
                                 <input
                                   type="hidden"
                                   name="id"
-                                  defaultValue={user.id}
+                                  value={user.id}
                                 />
                                 {/* name */}
 
@@ -315,7 +315,7 @@ const TableUsers = () => {
                                     className="grow"
                                     placeholder="Name"
                                     name="name"
-                                    defaultValue={user.name}
+                                    value={user.name}
                                   />
                                 </label>
                                 {/* phoneNumber */}
@@ -333,7 +333,7 @@ const TableUsers = () => {
                                     className="grow"
                                     placeholder="62xxx"
                                     name="phoneNumber"
-                                    defaultValue={user.phoneNumber}
+                                    value={user.phoneNumber}
                                   />
                                 </label>
                                 {/* email */}
@@ -352,7 +352,7 @@ const TableUsers = () => {
                                     className="grow"
                                     placeholder="Email"
                                     name="email"
-                                    defaultValue={user.auth.email}
+                                    value={user.auth.email}
                                     readOnly
                                   />
                                 </label>
@@ -371,7 +371,7 @@ const TableUsers = () => {
                                     className="grow"
                                     placeholder="Family Name"
                                     name="familyName"
-                                    defaultValue={user.familyName}
+                                    value={user.familyName}
                                   />
                                 </label>
                                 {/* password */}
@@ -391,7 +391,7 @@ const TableUsers = () => {
                                   <input
                                     type="password"
                                     className="grow"
-                                    defaultValue={user.auth.password}
+                                    value={user.auth.password}
                                     name="password"
                                     placeholder="**********"
                                   />
@@ -402,9 +402,7 @@ const TableUsers = () => {
                                   name="isVerified"
                                 >
                                   <option
-                                    defaultValue={
-                                      user.auth.isVerified ? '1' : '0'
-                                    }
+                                    value={user.auth.isVerified ? '1' : '0'}
                                     selected
                                     hidden
                                   >
@@ -420,11 +418,7 @@ const TableUsers = () => {
                                   className="select w-full input input-bordered flex items-center gap-2 my-2 bg-white dark:bg-boxdark"
                                   name="role"
                                 >
-                                  <option
-                                    defaultValue={user.role}
-                                    selected
-                                    hidden
-                                  >
+                                  <option value={user.role} selected hidden>
                                     {user.role}
                                   </option>
                                   <option value="ADMIN">ADMIN</option>
@@ -433,7 +427,7 @@ const TableUsers = () => {
 
                                 <input
                                   type="submit"
-                                  defaultValue="Update"
+                                  value="Update"
                                   className="btn bg-white dark:bg-black w-full my-3"
                                 />
                               </form>
