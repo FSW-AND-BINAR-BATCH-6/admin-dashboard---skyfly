@@ -333,7 +333,7 @@ const TableAirlines = () => {
                                 <input
                                   type="hidden"
                                   name="id"
-                                  value={airline.id}
+                                  defaultValue={airline.id}
                                 />
                                 <div className="mb-4">
                                   <label
@@ -345,7 +345,7 @@ const TableAirlines = () => {
                                   <input
                                     type="text"
                                     name="code"
-                                    value={airline.code}
+                                    defaultValue={airline.code}
                                     className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                                   />
                                 </div>
@@ -359,7 +359,7 @@ const TableAirlines = () => {
                                   <input
                                     type="text"
                                     name="name"
-                                    value={airline.name}
+                                    defaultValue={airline.name}
                                     className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                                   />
                                 </div>
@@ -373,7 +373,7 @@ const TableAirlines = () => {
                                   <input
                                     type="text"
                                     name="terminal"
-                                    value={airline.terminal}
+                                    defaultValue={airline.terminal}
                                     className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                                   />
                                 </div>

@@ -426,7 +426,7 @@ const TableTransactions = () => {
                                 <input
                                   type="hidden"
                                   name="id"
-                                  value={transaction.id}
+                                  defaultValue={transaction.id}
                                 />
                                 {/* orderId */}
                                 <label className="input input-bordered flex items-center gap-2 my-2 bg-white dark:bg-boxdark">
@@ -436,7 +436,7 @@ const TableTransactions = () => {
                                     className="grow"
                                     placeholder="Order ID"
                                     name="orderId"
-                                    value={transaction.orderId}
+                                    defaultValue={transaction.orderId}
                                     readOnly
                                   />
                                 </label>
@@ -448,7 +448,7 @@ const TableTransactions = () => {
                                     className="grow"
                                     placeholder="Total Price"
                                     name="totalPrice"
-                                    value={transaction.totalPrice}
+                                    defaultValue={transaction.totalPrice}
                                   />
                                 </label>
                                 {/* tax */}
@@ -459,7 +459,7 @@ const TableTransactions = () => {
                                     className="grow"
                                     name="tax"
                                     placeholder="Tax"
-                                    value={transaction.tax}
+                                    defaultValue={transaction.tax}
                                   />
                                 </label>
                                 {/* bookingDate */}
@@ -470,7 +470,7 @@ const TableTransactions = () => {
                                     className="grow"
                                     placeholder="Booking Date"
                                     name="bookingDate"
-                                    value={transaction.bookingDate}
+                                    defaultValue={transaction.bookingDate}
                                     readOnly
                                   />
                                 </label>
@@ -482,7 +482,7 @@ const TableTransactions = () => {
                                     className="grow"
                                     placeholder="Booking Code"
                                     name="bookingCode"
-                                    value={transaction.bookingCode}
+                                    defaultValue={transaction.bookingCode}
                                     readOnly
                                   />
                                 </label>
@@ -493,7 +493,7 @@ const TableTransactions = () => {
                                   <input
                                     type="text"
                                     className="grow"
-                                    value={transaction.userId}
+                                    defaultValue={transaction.userId}
                                     name="userId"
                                     placeholder="User ID"
                                     readOnly
@@ -505,21 +505,25 @@ const TableTransactions = () => {
                                   name="status"
                                 >
                                   <option
-                                    value={transaction?.status}
+                                    defaultValue={transaction?.status}
                                     selected
                                     hidden
                                   >
                                     {transaction.status}
                                   </option>
-                                  <option value="pending">Pending</option>
-                                  <option value="cancel">Cancel</option>
-                                  <option value="settlement">Settlement</option>
-                                  <option value="expire">Expire</option>
+                                  <option defaultValue="pending">
+                                    Pending
+                                  </option>
+                                  <option defaultValue="cancel">Cancel</option>
+                                  <option defaultValue="settlement">
+                                    Settlement
+                                  </option>
+                                  <option defaultValue="expire">Expire</option>
                                 </select>
 
                                 <input
                                   type="submit"
-                                  value="Update"
+                                  defaultValue="Update"
                                   className="btn bg-white dark:bg-black w-full my-3 text-orange-400"
                                 />
                               </form>

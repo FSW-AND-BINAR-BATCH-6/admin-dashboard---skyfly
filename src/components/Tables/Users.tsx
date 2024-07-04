@@ -273,7 +273,7 @@ const TableUsers = () => {
                       {/* Edit */}
                       <button
                         className="hover:text-warning"
-                        title="edit"
+                        title={`edit-${user.name}`}
                         onClick={() =>
                           document
                             .getElementById(`edit_modal-${user.id}`)!
@@ -297,7 +297,7 @@ const TableUsers = () => {
                                 <input
                                   type="hidden"
                                   name="id"
-                                  value={user.id}
+                                  defaultValue={user.id}
                                 />
                                 {/* name */}
 
@@ -315,7 +315,7 @@ const TableUsers = () => {
                                     className="grow"
                                     placeholder="Name"
                                     name="name"
-                                    value={user.name}
+                                    defaultValue={user.name}
                                   />
                                 </label>
                                 {/* phoneNumber */}
@@ -333,7 +333,7 @@ const TableUsers = () => {
                                     className="grow"
                                     placeholder="62xxx"
                                     name="phoneNumber"
-                                    value={user.phoneNumber}
+                                    defaultValue={user.phoneNumber}
                                   />
                                 </label>
                                 {/* email */}
@@ -352,7 +352,7 @@ const TableUsers = () => {
                                     className="grow"
                                     placeholder="Email"
                                     name="email"
-                                    value={user.auth.email}
+                                    defaultValue={user.auth.email}
                                     readOnly
                                   />
                                 </label>
@@ -371,7 +371,7 @@ const TableUsers = () => {
                                     className="grow"
                                     placeholder="Family Name"
                                     name="familyName"
-                                    value={user.familyName}
+                                    defaultValue={user.familyName}
                                   />
                                 </label>
                                 {/* password */}
@@ -391,7 +391,7 @@ const TableUsers = () => {
                                   <input
                                     type="password"
                                     className="grow"
-                                    value={user.auth.password}
+                                    defaultValue={user.auth.password}
                                     name="password"
                                     placeholder="**********"
                                   />
@@ -402,7 +402,9 @@ const TableUsers = () => {
                                   name="isVerified"
                                 >
                                   <option
-                                    value={user.auth.isVerified ? '1' : '0'}
+                                    defaultValue={
+                                      user.auth.isVerified ? '1' : '0'
+                                    }
                                     selected
                                     hidden
                                   >
@@ -410,24 +412,32 @@ const TableUsers = () => {
                                       ? 'verified'
                                       : 'un-verified'}
                                   </option>
-                                  <option value={'true'}>Verified</option>
-                                  <option value={'false'}>Unverified</option>
+                                  <option defaultValue={'true'}>
+                                    Verified
+                                  </option>
+                                  <option defaultValue={'false'}>
+                                    Unverified
+                                  </option>
                                 </select>
                                 {/* role */}
                                 <select
                                   className="select w-full input input-bordered flex items-center gap-2 my-2 bg-white dark:bg-boxdark"
                                   name="role"
                                 >
-                                  <option value={user.role} selected hidden>
+                                  <option
+                                    defaultValue={user.role}
+                                    selected
+                                    hidden
+                                  >
                                     {user.role}
                                   </option>
-                                  <option value="ADMIN">ADMIN</option>
-                                  <option value="BUYER">BUYER</option>
+                                  <option defaultValue="ADMIN">ADMIN</option>
+                                  <option defaultValue="BUYER">BUYER</option>
                                 </select>
 
                                 <input
                                   type="submit"
-                                  value="Update"
+                                  defaultValue="Update"
                                   className="btn bg-white dark:bg-black w-full my-3"
                                 />
                               </form>

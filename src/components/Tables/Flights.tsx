@@ -485,7 +485,7 @@ const TableFlights = () => {
                                 <input
                                   type="hidden"
                                   name="id"
-                                  value={flight.id}
+                                  defaultValue={flight.id}
                                 />
                                 {/* Departure Date */}
                                 <span className="text-xs text-gray-500 dark:text-gray-400 mb-1">
@@ -507,7 +507,9 @@ const TableFlights = () => {
                                 <label className="input input-bordered flex items-start gap-1 my-2 bg-white dark:bg-boxdark p-2 w-full">
                                   <div className="flex items-center gap-2 w-full">
                                     <input
-                                      value={flight.departureDate.split('T')[0]}
+                                      defaultValue={
+                                        flight.departureDate.split('T')[0]
+                                      }
                                       type="date"
                                       className="grow w-full"
                                       placeholder="Departure Date"
@@ -515,7 +517,7 @@ const TableFlights = () => {
                                       id="departureDate"
                                     />
                                     <input
-                                      value={flight.departureTime}
+                                      defaultValue={flight.departureTime}
                                       type="time"
                                       className="grow w-full"
                                       placeholder="Departure Time"
@@ -542,11 +544,16 @@ const TableFlights = () => {
                                   className="select w-full input input-bordered flex items-center gap-2 my-2 bg-white dark:bg-boxdark"
                                   name="departureAirportId"
                                 >
-                                  <option value={flight.departureAirport.id}>
+                                  <option
+                                    defaultValue={flight.departureAirport.id}
+                                  >
                                     {flight.departureAirport.name}
                                   </option>
                                   {airports.map((airport) => (
-                                    <option key={airport.id} value={airport.id}>
+                                    <option
+                                      key={airport.id}
+                                      defaultValue={airport.id}
+                                    >
                                       {airport.name}
                                     </option>
                                   ))}
@@ -571,14 +578,16 @@ const TableFlights = () => {
                                 <label className="input input-bordered flex items-start gap-1 my-2 bg-white dark:bg-boxdark p-2 w-full">
                                   <div className="flex items-center gap-2 w-full">
                                     <input
-                                      value={flight.arrivalDate.split('T')[0]}
+                                      defaultValue={
+                                        flight.arrivalDate.split('T')[0]
+                                      }
                                       type="date"
                                       className="grow w-full"
                                       placeholder="Arrival Date"
                                       name="arrivalDate"
                                     />
                                     <input
-                                      value={flight.arrivalTime}
+                                      defaultValue={flight.arrivalTime}
                                       type="time"
                                       className="grow w-full"
                                       placeholder="Departure Time"
@@ -604,11 +613,16 @@ const TableFlights = () => {
                                   className="select w-full input input-bordered flex items-center gap-2 my-2 bg-white dark:bg-boxdark"
                                   name="destinationAirportId"
                                 >
-                                  <option value={flight.destinationAirport.id}>
+                                  <option
+                                    defaultValue={flight.destinationAirport.id}
+                                  >
                                     {flight.destinationAirport.name}
                                   </option>
                                   {airports.map((airport) => (
-                                    <option key={airport.id} value={airport.id}>
+                                    <option
+                                      key={airport.id}
+                                      defaultValue={airport.id}
+                                    >
                                       {airport.name}
                                     </option>
                                   ))}
@@ -629,7 +643,7 @@ const TableFlights = () => {
                                   <input
                                     type="number"
                                     className="input w-full input-bordered flex items-center gap-2 my-2 bg-white dark:bg-boxdark"
-                                    value={flight.capacity}
+                                    defaultValue={flight.capacity}
                                     name="capacity"
                                     max={72}
                                   />
@@ -650,7 +664,7 @@ const TableFlights = () => {
                                   <input
                                     type="text"
                                     className="input w-full input-bordered flex items-center gap-2 my-2 bg-white dark:bg-boxdark"
-                                    value={flight.price}
+                                    defaultValue={flight.price}
                                     name="price"
                                     placeholder="Rp 0"
                                   />
@@ -671,7 +685,7 @@ const TableFlights = () => {
                                   <input
                                     type="number"
                                     className="input w-full input-bordered flex items-center gap-2 my-2 bg-white dark:bg-boxdark"
-                                    value={
+                                    defaultValue={
                                       flight.discount ? flight.discount : 0
                                     }
                                     name="discount"
@@ -695,7 +709,7 @@ const TableFlights = () => {
                                   <input
                                     type="textArea"
                                     className="input w-full input-bordered flex items-center gap-2 my-2 bg-white dark:bg-boxdark"
-                                    value={
+                                    defaultValue={
                                       flight.facilities ? flight.facilities : ''
                                     }
                                     name="facilities"
@@ -703,7 +717,7 @@ const TableFlights = () => {
                                 </label>
                                 <input
                                   type="submit"
-                                  value="Update"
+                                  defaultValue="Update"
                                   className="btn bg-white dark:bg-black w-full my-3"
                                 />
                               </form>
