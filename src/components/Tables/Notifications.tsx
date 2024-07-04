@@ -304,6 +304,7 @@ const TableNotifications = () => {
         <nav
           className="pagination is-centered"
           role="navigation"
+          key={rows}
           aria-label="pagination"
         >
           <Paginate
