@@ -44,7 +44,7 @@ const updateUser = async (e: React.ChangeEvent<any>, navigate: any) => {
   let userLoggedIn = JSON.parse(isLogin);
   let token = userLoggedIn.token;
 
-  const response = await axios.put(
+  const response = await axios.patch(
     `https://backend-skyfly-c1.vercel.app/api/v1/users/${id}`,
     data,
     {
