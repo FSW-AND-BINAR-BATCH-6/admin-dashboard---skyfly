@@ -224,7 +224,7 @@ const TableNotifications = () => {
 
   const [page, setPage] = useState<number>(0);
   const [pages, setPages] = useState<number>(0);
-  const [limit, setLimit] = useState<number>(2);
+  const [limit, setLimit] = useState<number>(10);
   const [rows, setRows] = useState<number>(0);
 
   const changePage = ({ selected }) => {
