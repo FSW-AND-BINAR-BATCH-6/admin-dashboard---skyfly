@@ -187,18 +187,20 @@ const TableTransactions = () => {
                     </p>
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                    <p
-                      className={`inline-flex rounded-full bg-opacity-10 py-1 px-3 text-sm font-medium ${
-                        transaction?.status === 'settlement' ||
-                        transaction?.status === 'capture'
-                          ? 'bg-success text-success'
-                          : transaction?.status === 'pending'
-                          ? 'bg-warning text-warning'
-                          : transaction?.status === 'expire'
-                          ? 'bg-danger text-danger'
-                          : 'bg-sky-500 text-white'
-                      }`}
-                    >
+<p
+  className={`inline-flex rounded-full bg-opacity-10 py-1 px-3 text-sm font-medium ${
+    transaction?.status === 'settlement' || transaction?.status === 'capture'
+      ? 'bg-success text-success'
+      : transaction?.status === 'pending'
+      ? 'bg-warning text-warning'
+      : transaction?.status === 'expire'
+      ? 'bg-danger text-danger'
+      : 'bg-sky-500 text-white'
+  }`}
+>
+  {/* Konten di sini */}
+</p>
+
                       {transaction?.status}
                     </p>
                   </td>
@@ -241,7 +243,9 @@ const TableTransactions = () => {
                                 <strong>{transaction?.totalPrice}</strong>
                                 <br /> Tax: <strong>{transaction?.tax}</strong>
                                 <br /> Transaction Status:
-                                <strong>{transaction?.status}</strong>
+                                <strong>
+                                  {transaction?.status }
+                                </strong>
                                 <br /> Booking Date:{' '}
                                 <strong>{transaction?.bookingDate}</strong>
                                 <br /> Booking Code:{' '}
